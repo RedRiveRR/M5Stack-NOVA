@@ -1,11 +1,11 @@
-# 🌌 NOVA v1.2.6 Aurum
+# 🌌 NOVA v1.2.7-Aurum
 ### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.2.6--Aurum-gold.svg)]()
+[![Version](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.2.7--Aurum-gold.svg)]()
 [![License](https://img.shields.io/badge/Lisans-GPL--3.0-blue.svg)]()
-[![Build](https://img.shields.io/badge/Derleme-v1.2.6--Aurum--Success-brightgreen.svg)]()
+[![Build](https://img.shields.io/badge/Derleme-v1.2.7--Aurum--Success-brightgreen.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-M5StickC--Plus2-black.svg)]()
 [![Language](https://img.shields.io/badge/Aray%C3%BCz-T%C3%BCrk%C3%A7e-red.svg)]()
 
@@ -113,6 +113,13 @@ pio run -t upload
 
 ## 📋 Changelog
 
+### v1.2.7 — Goldilocks Stability & Final Release (2026-04-11)
+- ✅ **Goldilocks 30ms Restoration**: En etkili ve stabil pop-up hızı olan 30ms ayarı geri getirildi.
+- ✅ **Global Input Stabilization**: Tüm savaş modülleri için yan buton (Menu) kilidi eklendi, yanlışlıkla çıkış engellendi.
+- ✅ **Decommissioned Surge**: Verimsiz ve hatalı çalışan Surge modülleri tamamen temizlenerek menüler sadeleştirildi.
+- ✅ **Burst Mode Optimization**: Maelstrom için yüksek yoğunluklu (Apple/Windows/Android) 9x kümeleme vuruşları finalize edildi.
+- ✅ **Flash-Ready Binary**: Direkt yüklenmeye hazır `NOVA_M5Stack_v1.2.7.bin` oluşturuldu.
+
 ### v1.1.1 — Android Warfare Suite Beta (2026-04-11)
 - ✅ **Android Warfare Suite** eklendi: Fast Pair Flood, Android Mix, Samsung/Pixel Siege
 - ✅ Google Fast Pair (0xFE2C) protokolü ile Android bildirim spam desteği
@@ -147,5 +154,5 @@ Bu yazılım sadece **etik siber güvenlik araştırması ve eğitim amaçlı** 
 ---
 
 <div align="center">
-  <b>NOVA v1.1.1</b> · Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
+  <b>NOVA v1.2.7-Aurum</b> · Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
 </div>

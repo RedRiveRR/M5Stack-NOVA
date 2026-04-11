@@ -36,15 +36,16 @@ void signal_hunter_draw_radar(int rssi) {
     #endif
 }
 
-void signal_hunter_loop(String target_ssid) {
-    int n = WiFi.scanNetworks(true, false, false, 80); // Quick scan
+void signal_hunter_process_results(String target_ssid) {
+    int n = WiFi.scanComplete();
+    if (n <= 0) return;
+    
     for (int i = 0; i < n; i++) {
         if (WiFi.SSID(i) == target_ssid) {
             signal_hunter_draw_radar(WiFi.RSSI(i));
             break;
         }
     }
-    WiFi.scanDelete();
 }
 
 #endif

