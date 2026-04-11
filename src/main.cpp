@@ -187,7 +187,7 @@ int selected_language = 0; // 0:EN, 1:TR, 2:IT, 3:PT, 4:FR
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
   #define IRLED 19
-  #define BITMAP M5.Display.drawBmp(NovaMatrix, 97338)
+  #define BITMAP M5.Display.drawBmp(NovaMatrix, 97254)
   #define M5_BUTTON_MENU 35
   #define M5_BUTTON_HOME 37
   #define M5_BUTTON_RST 39
@@ -221,7 +221,7 @@ int selected_language = 0; // 0:EN, 1:TR, 2:IT, 3:PT, 4:FR
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
   #define IRLED 46
-  #define BITMAP M5.Display.drawBmp(NovaMatrix, 97338)
+  #define BITMAP M5.Display.drawBmp(NovaMatrix, 97254)
   #define M5_BUTTON_MENU 12  // KEY2 per device diagram
   #define M5_BUTTON_HOME 11  // KEY1 (main front button)
   #define M5_BUTTON_RST -1   // GPIO 0 not usable on StickS3 (power/boot pin)
@@ -288,7 +288,7 @@ int selected_language = 0; // 0:EN, 1:TR, 2:IT, 3:PT, 4:FR
   #define BACKLIGHT 38
   #define MINBRIGHT 165
   #define SPEAKER M5Cardputer.Speaker
-  #define BITMAP M5Cardputer.Display.drawBmp(NovaMatrix, 97338)
+  #define BITMAP M5Cardputer.Display.drawBmp(NovaMatrix, 97254)
   #define SD_CLK_PIN 40
   #define SD_MISO_PIN 39
   #define SD_MOSI_PIN 14
@@ -2320,10 +2320,8 @@ void bootScreen(){
   #ifdef SONG
   setupSongs();
   #endif
-  //#if !defined(STICK_C)
-  //BITMAP;
-  //delay(3000);
-  //#endif
+  BITMAP;
+  delay(3000);
   DISP.fillScreen(BGCOLOR);
   DISP.setTextSize(BIG_TEXT);
   DISP.setCursor(40, 0);
