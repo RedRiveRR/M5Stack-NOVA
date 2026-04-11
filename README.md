@@ -9,7 +9,7 @@
 [![Platform](https://img.shields.io/badge/Platform-M5StickC--Plus2-black.svg)]()
 [![Language](https://img.shields.io/badge/Aray%C3%BCz-T%C3%BCrk%C3%A7e-red.svg)]()
 
-**NOVA Aurum**, M5Stack donanım platformunun sınırlarını zorlamak için RedRiveRR tarafından sıfırdan geliştirilmiş, bağımsız bir **Özel Üretim (Custom) Yazılım** gücüdür. Standart bir cihazı, kablosuz ağlar, Bluetooth spektrumu ve HID protokolleri üzerinde tam hakimiyet kuran profesyonel bir ofansif istasyona dönüştürür.
+**NOVA Aurum**, M5Stack donanım platformunun sınırlarını zorlamak için RedRiveRR tarafından geliştirilmiş, bağımsız bir **Özel Üretim (Custom) Yazılım** gücüdür. Standart bir cihazı, kablosuz ağlar, Bluetooth spektrumu ve HID protokolleri üzerinde tam hakimiyet kuran profesyonel bir ofansif istasyona dönüştürür.
 
 [Modüller](#-operasyonel-modüller) • [Sistem Mimarisi](#-sistem-mimarisi) • [Warfare Center](#-warfare-center-v12) • [Aurum Core](#-universal-maelstrom-v20) • [Kurulum](#-kurulum-ve-dağıtım)
 
