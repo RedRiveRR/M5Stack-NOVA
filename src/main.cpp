@@ -21,8 +21,10 @@
 #define LANGUAGE_TR_TR // Turkish Support
 
 // -- DEPRECATED - THESE ARE NOW EEPROM DEFINED -- //
-uint16_t BGCOLOR=0x0000; // Cyan/Dark Theme Default: Black
-uint16_t FGCOLOR=0x07FF; // Cyan/Dark Theme Default: Cyan
+uint16_t BGCOLOR=0x0000; // Black
+uint16_t FGCOLOR=0xFD20; // Gold
+uint16_t ACCENT=0xFAC0;  // Orange
+uint16_t SUBTEXT=0xCE79; // Warm White
 
 #ifndef NOVA_VERSION
   #define NOVA_VERSION "1.2.6 Apocalypse Gold" 
@@ -2552,44 +2554,73 @@ void bootScreen(){
   #ifdef SONG
   setupSongs();
   #endif
-  BITMAP;
-  DISP.setTextColor(WHITE, BLACK);
-  DISP.setTextSize(SMALL_TEXT);
-  DISP.setCursor(5, 120);
-  DISP.println(" v1.2.6 Apocalypse Gold ");
-  delay(3000);
-  DISP.fillScreen(BLACK);
-  DISP.setTextSize(BIG_TEXT);
-  DISP.setCursor(30, 0);
-  DISP.println("M5-NOVA");
-  DISP.setCursor(10, 40);
-  DISP.setTextSize(SMALL_TEXT);
-  DISP.setTextColor(CYAN, BLACK);
-  DISP.printf("System: %s\n", NOVA_VERSION);
-  DISP.printf("Target: %s\n", platformName);
-#if defined(CARDPUTER)
-  DISP.println(TXT_INST_NXT);
-  DISP.println(TXT_INST_PRV);
-  DISP.println(TXT_INST_SEL);
-  DISP.println(TXT_INST_HOME);
-  delay(1500);
-  DISP.println(TXT_INST_PRSS_KEY);
-  while(true){
-    M5Cardputer.update();
-    if (M5Cardputer.Keyboard.isChange()) {
-      drawmenu(mmenu, mmenu_size);
-      delay(250);
-      break;
-    }
+  
+  DISP.fillScreen(TFT_BLACK);
+  DISP.setTextWrap(false);
+  DISP.setTextSize(TINY_TEXT);
+  DISP.setTextColor(FGCOLOR, TFT_BLACK); // Gold Matrix
+
+  // 1. Hardware Fade-In
+  #if defined(BACKLIGHT)
+    analogWrite(BACKLIGHT, 0);
+  #endif
+  for (int b = 0; b <= brightness; b += 10) {
+    screenBrightness(b);
+    delay(10);
   }
-#else
-  DISP.println(TXT_STK_NXT);
-  DISP.println(TXT_STK_SEL);
-#if !defined(STICKS3)
-  DISP.println(TXT_STK_HOME);
-#endif
-  delay(3000);
-#endif
+
+  // 2. Total Matrix Overload (Dynamic Gold Coverage)
+  int w = DISP.width(); 
+  int h = DISP.height();
+  int colWidth = 28;
+  int rowHeight = 9;
+  int cols = (w / colWidth) + 1;
+  int rows = (h / rowHeight) + 1;
+  
+  for (int cycle = 0; cycle < 12; cycle++) {
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+        DISP.setCursor(c * colWidth, r * rowHeight);
+        DISP.printf("0x%02X", random(256));
+      }
+      if (r % 4 == 0) delay(2);
+    }
+    #if defined(SPEAKER)
+      if (cycle % 3 == 0) M5.Speaker.tone(1500 + (cycle * 200), 10); 
+    #endif
+  }
+
+  DISP.setTextWrap(true);
+  
+  // 3. Branded Reveal Phase - Cyber-Gold Edition
+  DISP.fillScreen(TFT_WHITE);
+  delay(100);
+  DISP.fillScreen(TFT_BLACK);
+  
+  // Center NOVA (Gold)
+  DISP.setTextSize(BIG_TEXT);
+  DISP.setTextColor(FGCOLOR, TFT_BLACK);
+  int novaW = 110; 
+  DISP.setCursor((w - novaW) / 2, (h / 2) - 30);
+  DISP.println(" NOVA ");
+  
+  // Center @RedRiveRR (Accent Orange)
+  DISP.setTextSize(SMALL_TEXT);
+  DISP.setTextColor(ACCENT, TFT_BLACK);
+  int rrW = 120;
+  DISP.setCursor((w - rrW) / 2, (h / 2) + 15);
+  DISP.println("@RedRiveRR");
+
+  #if defined(CARDPUTER)
+    DISP.setCursor(10, h - 30);
+    DISP.println(TXT_INST_PRSS_KEY);
+    while(true){
+      M5Cardputer.update();
+      if (M5Cardputer.Keyboard.isChange()) break;
+    }
+  #else
+    delay(2500);
+  #endif
 }
 
 void qrmenu_drawmenu() {

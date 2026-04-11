@@ -1,12 +1,12 @@
-# 🌌 NOVA v1.2.5 Apocalypse
+# 🌌 NOVA v1.2.6 Apocalypse Gold
 ### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.2.5--Apocalypse-gold.svg)]()
+[![Version](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.2.6--Gold-gold.svg)]()
 [![License](https://img.shields.io/badge/Lisans-GPL--3.0-blue.svg)]()
-[![Build](https://img.shields.io/badge/Derleme-Ba%C5%9Far%C4%B1l%C4%B1-brightgreen.svg)]()
-[![Platform](https://img.shields.io/badge/Platform-ESP32--S3-black.svg)]()
+[![Build](https://img.shields.io/badge/Derleme-v1.2.6--Flash--Success-brightgreen.svg)]()
+[![Platform](https://img.shields.io/badge/Platform-M5StickC--Plus2-black.svg)]()
 [![Language](https://img.shields.io/badge/Aray%C3%BCz-T%C3%BCrk%C3%A7e-red.svg)]()
 
 <img src="logo.png" width="400" alt="NOVA Operational Logo">
