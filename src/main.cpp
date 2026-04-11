@@ -144,10 +144,19 @@ void af_samsung_setup();
 void af_samsung_loop();
 void af_pixel_setup();
 void af_pixel_loop();
+void af_pixel_loop();
 void winmenu_setup();
 void winmenu_loop();
 void wf_flood_setup();
 void wf_flood_loop();
+
+// Aurum Elite Prototypes
+void ios17_surge_setup();
+void ios17_surge_loop();
+void karma_hunter_setup();
+void karma_hunter_loop();
+void signal_hunter_setup();
+void signal_hunter_loop();
 void wf_mix_setup();
 void wf_mix_loop();
 void wf_mouse_setup();
@@ -213,7 +222,7 @@ int selected_language = 0; // 0:EN, 1:TR, 2:IT, 3:PT, 4:FR
 #endif
 
 #if defined(STICK_C_PLUS2)
-  #include <M5Unified.h>
+#include <M5Unified.h>
   // -=-=- Display -=-=-
   String platformName="StickC+2";
   #define BIG_TEXT 4
@@ -423,6 +432,10 @@ long m_andro_cnt = 0;
 long m_win_cnt = 0;
 String apSsidName = String("");
 bool isSwitching = true;
+
+#include "ios17_surge.h"
+#include "karma_hunter.h"
+#include "signal_hunter.h"
 
 void beaconSpamRandom(); // Forward declaration
 
@@ -680,6 +693,7 @@ MenuController menuController;
 /// iOS Warfare MENU ///
 MENU iosmenu[] = {
   { "Back", 1},
+  { "iOS 17 Surge", 80},
   { "AirTag Phantom", 42},
   { "HomeKit Siege", 43},
   { "SA v2 Turbo", 44},
@@ -820,14 +834,15 @@ MENU mmenu[] = {
 #if defined(RTC)
   { "", 0},
 #endif
-  { "", 13}, // We jump to the region menu first
+  { "", 13}, 
   { "", 16},
   { "", 12},
 #if defined(CARDPUTER)
   { "", 27},
 #endif
   { "", 18},
-  { "", 71}, // Warfare Center
+  { "", 71}, 
+  { "Signal Stalker", 82},
   { "", 2},
 };
 int mmenu_size = sizeof(mmenu) / sizeof(MENU);
@@ -2345,13 +2360,14 @@ void btmaelstrom_loop(){
 /// WIFI MENU ///
 MENU wsmenu[] = {
   { "", 5},
-  { "", 0},
+  { "", 14},
   { "", 1},
   { "", 2},
   { "", 3},
-  { "Nova Portal", 4},
+  { "Nova Portal", 19},
   { "Deauth Hunter", 24},
-  { "", 26},
+  { "Karma 2.0 Hunter", 81},
+  { "Back", 1},
 };
 int wsmenu_size = sizeof(wsmenu) / sizeof (MENU);
 
@@ -2883,11 +2899,42 @@ ProcessHandler processes[] = {
   {65, wf_kb_setup, wf_kb_loop, "Surface KB Siege"},
   {71, wf_ctr_setup, wf_ctr_loop, "Warfare Center Menu"},
   {72, maelstrom_setup, maelstrom_loop, "Universal Maelstrom"},
+  {80, ios17_surge_setup, ios17_surge_loop, "iOS 17 Surge"},
+  {81, karma_hunter_setup, karma_hunter_loop, "Karma Hunter"},
+  {82, signal_hunter_setup, signal_hunter_loop, "Signal Hunter"},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
   {-1, nullptr, nullptr, nullptr} // Sentinel
 };
+
+// --- Aurum Elite Wrappers ---
+void ios17_surge_setup() { 
+  DISP.fillScreen(BLACK); DISP.setCursor(0,0); DISP.setTextColor(FGCOLOR); 
+  DISP.println(" iOS 17 Surge\n ACTIVATE..."); delay(1000); ios17_surge_start(0); 
+}
+void ios17_surge_loop() { if(check_select_press()) { ios17_surge_stop(); isSwitching=true; current_proc=41; } }
+
+void karma_hunter_setup() { 
+  DISP.fillScreen(BLACK); DISP.setCursor(0,0); DISP.setTextColor(FGCOLOR); 
+  DISP.println(" Karma 2.0\n Sniffing Probes..."); karma_hunter_start(); 
+}
+void karma_hunter_loop() { karma_respond_to_all(); if(check_select_press()) { karma_hunter_stop(); isSwitching=true; current_proc=12; } }
+
+void signal_hunter_setup() { 
+  DISP.fillScreen(BLACK); DISP.setCursor(0,0); DISP.setTextColor(FGCOLOR); 
+  DISP.println(" Signal Stalker\n Radar Scan..."); delay(800); 
+}
+void signal_hunter_loop() { 
+  // Track first detected SSID for demo
+  if(WiFi.scanComplete() <= -1 && WiFi.scanComplete() != -2) WiFi.scanNetworks(true);
+  if(WiFi.scanComplete() >= 0) {
+    if(WiFi.scanComplete() > 0) signal_hunter_loop(WiFi.SSID(0));
+    WiFi.scanDelete();
+    WiFi.scanNetworks(true); // Restart scan
+  }
+  if(check_select_press()) { isSwitching=true; current_proc=1; } 
+}
 
 void rebuildMenus() {
   // Main Menu labels
