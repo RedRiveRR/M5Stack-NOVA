@@ -34,7 +34,7 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 *   **BLE Sniffer & Flooder:** 2.4GHz Bluetooth paketlerini yakalar ve spektrumu geçersiz paketlerle doldurur.
 
 ### 🍎 3. iOS Warfare Suite (v1.1)
-> **v1.1.0'da yeni!** Modern iPhone'lar (iOS 17/18) için özel olarak geliştirilmiş DoS bildirim motoru.
+> **v1.1.0'da yeni!** Modern iPhone'lar (iOS 17 — 26.x) için özel olarak geliştirilmiş DoS bildirim motoru.
 
 *   **AirTag Phantom:** Apple Nearby Action protokolü üzerinden sürekli popup bildirimi yağdırır.
 *   **HomeKit Siege:** HomePod/HomeKit eşleşme popup'ları oluşturarak hedef cihazı meşgul eder.
