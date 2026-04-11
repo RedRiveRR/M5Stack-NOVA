@@ -8,7 +8,7 @@
 [![Platform](https://img.shields.io/badge/Platform-ESP32--S3-black.svg)]()
 [![Language](https://img.shields.io/badge/Arayüz-Türkçe-red.svg)]()
 
-<img src="https://raw.githubusercontent.com/RedRiveRR/M5Stack-NOVA/main/NovaMatrix.png" width="350" alt="NOVA Operational Logo">
+<img src="NovaMatrix.png" width="350" alt="NOVA Operational Logo">
 
 **NOVA**, M5Stack donanım mimarisi üzerine inşa edilmiş, hafif (lightweight) ancak yüksek performanslı bir siber güvenlik araştırma firmware'idir. Saha operasyonları, sızma testleri ve dijital sinyal analizi prototipleri için optimize edilmiştir.
 
