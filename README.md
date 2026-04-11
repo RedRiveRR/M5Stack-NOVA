@@ -13,9 +13,28 @@
 
 **NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
 
-[Modüller](#-operasyonel-modüller) • [Warfare Center](#-warfare-center-v12) • [Apocalypse Mode](#-universal-maelstrom-v20) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Changelog](#-changelog)
+[Modüller](#-operasyonel-modüller) • [Sistem Mimarisi](#-sistem-mimarisi) • [Warfare Center](#-warfare-center-v12) • [Aurum Core](#-universal-maelstrom-v20) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım)
 
 </div>
+
+---
+
+## 🏛️ Sistem Mimarisi (Exploded View)
+
+Nova Aurum, donanım gücü ile yazılım zekasının mükemmel birleşiminden oluşur. Aşağıdaki teknik şema, M5StickC Plus2 donanımı üzerindeki **Aurum Engine** çekirdeğini ve sinyal enjeksiyon katmanlarını göstermektedir.
+
+<div align="center">
+<img src="architecture_3d.png" width="600" alt="NOVA Aurum 3D System Architecture">
+</div>
+
+### 📡 1. RF & Sinyal Katmanı
+Nova Aurum, ESP32-S3'ün dâhili 2.4GHz RF yeteneklerini kullanarak WiFi ve BLE yığınlarını (Stack) doğrudan manipüle eder. Sinyaller, Aurum Core tarafından üretilen yüksek frekanslı paketlerle modüle edilir.
+
+### 🧠 2. Aurum Core Engine
+Yazılımın kalbi olan Aurum Core, bellek yönetimini (SRAM) optimize ederek aynı anda binlerce paketi saniyeler içinde spektruma enjekte edebilir. Bu katman, donanım kaynaklarını %100 kapasiteyle "Mission Critical" modunda çalıştırır.
+
+### 🖥️ 3. Taktiksel Arayüz (UI Bridge)
+M5Unified kütüphanesi üzerine inşa edilen görsel köprü, karmaşık saldırı verilerini taktiksel bir terminal arayüzüne dönüştürerek kullanıcıya anlık geri bildirim sağlar.
 
 ---
 
