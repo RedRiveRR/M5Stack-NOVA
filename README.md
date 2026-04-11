@@ -1,67 +1,83 @@
-# 🚀 Nova Firmware
+<div align="center">
 
-M5Stack cihazları için özel olarak geliştirilmiş, modern ve güçlü bir siber güvenlik araştırma ve dijital şaka platformu. **Nova**, taşınabilir donanımlarınızı profesyonel bir siber güvenlik aracına dönüştürür.
+# 🌌 NOVA FIRMWARE
+### *M5Stack Cihazlar İçin Gelişmiş Siber Güvenlik ve Dijital Araştırma Platformu*
 
-![Nova Matrix Logo](./NovaMatrix.png)
+[![Language](https://img.shields.io/badge/Dil-Türkçe-informational.svg)]()
+[![Platform](https://img.shields.io/badge/Platform-M5Stack-orange.svg)]()
+[![Status](https://img.shields.io/badge/Durum-Aktif-success.svg)]()
+
+<img src="https://raw.githubusercontent.com/RedRiveRR/M5Stack-NOVA/main/NovaMatrix.png" width="300" alt="Nova Logo">
+
+**Nova**, M5Stack donanımlarınızı taşınabilir bir siber güvenlik laboratuvarına dönüştüren, modern arayüzlü ve tam kapsamlı bir firmware projesidir.
 
 ---
 
-## 🌟 Öne Çıkan Özellikler
+[Özellikler](#-özellikler) • [Kurulum](#-kurulum) • [Kullanım](#-kullanım) • [Sorumluluk Reddi](#-sorumluluk-reddi)
 
-### 🛡️ Güvenlik ve Farkındalık
-- **BadUSB Hunter:** Bağlanan USB cihazlarını (Klavye emülasyonu vb.) analiz eder ve tehlikeli cihazları (Rubber Ducky, O.MG vb.) tespit eder.
-- **Deauth Hunter:** Çevrenizdeki WiFi saldırılarını (Deauth/DoS) anlık olarak yakalar ve sizi uyarır.
-- **PineAP Hunter:** Sahte erişim noktalarını (Rogue AP) ve WiFi Pineapple cihazlarını tespit eder.
-- **BLE Hunter:** Bluetooth reklam saldırılarını ve spam sinyallerini izler.
+</div>
 
-### ⚡ Saldırı ve Test Araçları
-- **AppleJuice:** iOS cihazlar için özelleştirilmiş Bluetooth eşleşme istekleri gönderir.
-- **BT/WiFi Spam:** Windows (SwiftPair) ve Android cihazlar için bildirim spamı ve yüzlerce sahte WiFi ağı oluşturma.
-- **Nova Portal:** Sosyal mühendislik testleri için özelleştirilebilir sahte giriş sayfası (Captive Portal).
-- **TV-B-Gone:** Neredeyse tüm televizyon ve monitörleri tek tuşla kapatma.
+---
 
-### 🛠️ Ek Araçlar
-- **WiFi Tarayıcı:** Çevredeki ağları analiz eder ve kopyalar.
-- **RTC Saat:** Cihaz kapalı olsa bile saati tutan gerçek zamanlı saat desteği.
-- **Tema Desteği:** Özelleştirilebilir Cyberpunk ve Gece Modu temaları.
+## 🔥 Özellikler
+
+### 🛡️ Savunma ve Analiz Araçları
+*   **BadUSB Hunter:** Bağlanan USB cihazlarını gerçek zamanlı analiz eder. HID saldırı potansiyeli olan (Rubber Ducky, O.MG vb.) cihazları anında tespit ederek sizi uyarır.
+*   **Deauth Hunter:** WiFi ağlarına yapılan deauthentication (bağlantı kesme) saldırılarını yakalar ve saldırı şiddetini sinyal gücüyle raporlar.
+*   **PineAP Hunter:** Sahte WiFi noktalarını (Rogue AP) ve WiFi Pineapple gibi saldırı cihazlarını tespit ederek güvenliğinizi korur.
+*   **BLE Hunter:** Bluetooth reklam spam saldırılarını izler ve şüpheli aktiviteyi grafiksel olarak gösterir.
+
+### 🧪 Siber Araştırma ve Testler
+*   **AppleJuice:** iOS cihazlar için özelleştirilmiş Bluetooth eşleşme sinyalleri göndererek güvenlik testleri yapmanıza olanak tanır.
+*   **Modern WiFi Spam:** Windows (SwiftPair) ve Android cihazlar için bildirim spamı oluşturma ve yüzlerce eş zamanlı sahte ağ yayını.
+*   **Nova Captive Portal:** Kimlik avı (phishing) senaryolarını test etmek için tamamen özelleştirilebilir bir karşılama sayfası sunar.
+*   **TV-B-Gone:** Gelişmiş IR kütüphanesi ile neredeyse tüm monitör ve televizyonları kontrol etme yeteneği.
 
 ---
 
 ## 📦 Kurulum
 
-### 1. M5Burner (En Kolay Yol)
-- [M5Burner](https://docs.m5stack.com/en/download) uygulamasını indirin.
-- Cihazınızı seçin (StickC Plus, Plus2 veya Cardputer).
-- Arama kısmına **"Nova"** yazın ve **RedRiveRR** tarafından paylaşılan resmi binary'yi indirin.
-- **Burn** butonuna basarak yükleyin.
+### 🚀 M5Burner (Hızlı Kurulum)
+En stabil deneyim için resmi **M5Burner** uygulamasını kullanmanızı öneririz:
+1.  [M5Burner'ı İndirin](https://docs.m5stack.com/en/download).
+2.  Cihazınızı (StickC Plus2, StampS3 vb.) seçin.
+3.  Arama kısmına **"Nova"** yazın.
+4.  **RedRiveRR** tarafından sunulan güncel binary'yi **Burn** diyerek yükleyin.
 
-### 2. PlatformIO (Geliştiriciler İçin)
-1. Bu repoyu bilgisayarınıza klonlayın.
-2. VS Code üzerinde PlatformIO eklentisini açın.
-3. `platformio.ini` dosyasından kendi cihaz modelinizi seçin.
-4. **Build & Upload** butonuna tıklayın.
-
----
-
-## 🎮 Kullanım Kılavuzu
-
-Cihaz üzerindeki butonların işlevleri:
-- **Ana Ekran (Home):** Aktif işlemi durdurur ve ana menüye döner.
-- **İleri (Next):** Menüde aşağı iner veya bir sonraki seçeneğe geçer.
-- **Seç (Select):** Seçili işlemi başlatır.
-
-> [!TIP]
-> **Türkçe Dil Değisimi:** Ayarlar (Settings) menüsünden **Language** seçeneğine girip **Turkce**'yi seçerek tüm arayüzü kendi dilinize çevirebilirsiniz.
+### 💻 PlatformIO (Geliştiriciler İçin)
+Kodu özelleştirmek ve kendiniz derlemek isterseniz:
+```bash
+git clone https://github.com/RedRiveRR/M5Stack-NOVA.git
+cd M5Stack-NOVA
+pio run -t upload
+```
 
 ---
 
-## 🤝 Katkıda Bulunma
-Geliştirmelere katkıda bulunmak için lütfen bir **Pull Request** açın veya hata bildirimleri için **Issues** kısmını kullanın.
+## 🎮 Kullanım Konfigürasyonu
+
+Nova, farklı M5Stack cihazları için optimize edilmiştir:
+-   **StickC serisi:** Güç butonu (Home), Yan buton (Next), M5 butonu (Select).
+-   **Cardputer:** Klavye üzerinden tam kontrol.
+
+> [!IMPORTANT]
+> **Arayüz Dili:** İlk açılışta dil İngilizce gelebilir. **Settings > Language** menüsünden **Turkce** seçeneğini seçerek tam yerelleştirmeyi aktif edebilirsiniz.
 
 ---
 
-## 📄 Lisans ve Uyarı
-Bu yazılım sadece **eğitim ve etik test amaçlıdır**. İzin alınmamış sistemlerde kullanılması yasal sorumluluk doğurabilir. Kullanıcı, bu aracın kullanımından doğacak her türlü sonuçtan kendisi sorumludur.
+## 🏗️ Teknoloji Yığını
+-   **Core:** ESP-IDF / Arduino
+-   **Display:** M5Unified & M5GFX
+-   **Networking:** ESP32 WiFi & BLE Stack
+-   **Framework:** PlatformIO
 
 ---
-*Geliştiren: [RedRiveRR](https://github.com/RedRiveRR)*
+
+## ⚖️ Sorumluluk Reddi (Disclaimer)
+Bu yazılım sadece **eğitim, siber güvenlik araştırması ve etik test amaçlı** geliştirilmiştir. İzin alınmamış sistemler üzerinde kullanılması pek çok ülkede yasalara aykırıdır. Bu aracın kullanımından doğacak her türlü yasal ve fiziksel sonuçtan tamamen kullanıcı sorumludur. **Geliştirici hiçbir sorumluluk kabul etmez.**
+
+---
+
+<p align="center">
+  Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
+</p>
