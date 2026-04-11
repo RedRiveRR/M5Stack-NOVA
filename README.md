@@ -1,11 +1,11 @@
-# 🌌 NOVA v1.2.6 Apocalypse Gold
+# 🌌 NOVA v1.2.6 Aurum
 ### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.2.6--Gold-gold.svg)]()
+[![Version](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.2.6--Aurum-gold.svg)]()
 [![License](https://img.shields.io/badge/Lisans-GPL--3.0-blue.svg)]()
-[![Build](https://img.shields.io/badge/Derleme-v1.2.6--Flash--Success-brightgreen.svg)]()
+[![Build](https://img.shields.io/badge/Derleme-v1.2.6--Aurum--Success-brightgreen.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-M5StickC--Plus2-black.svg)]()
 [![Language](https://img.shields.io/badge/Aray%C3%BCz-T%C3%BCrk%C3%A7e-red.svg)]()
 
@@ -40,8 +40,8 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 *   **Android Warfare Suite:** Google Fast Pair protokolü üzerinden Android cihazları meşgul eden DoS motoru.
 *   **Windows Warfare Suite:** Microsoft Swift Pair protokolü üzerinden Windows 10/11 cihazlarına popup yağdırır (Surface Mouse, Xbox, Klavye taklitleri).
 
-### 🌪️ 4. Universal Maelstrom v2.0 (Apocalypse Gold)
-> **v1.2.6'da güncellendi!** Nova'nın durdurulamaz en güçlü kaos modu.
+### 🌪️ 4. Universal Maelstrom v2.0 (Aurum Core)
+> **v1.2.6 Aurum sürümünde güncellendi!** Nova'nın durdurulamaz en güçlü kaos modu.
 
 *   **9x Burst Mode:** Her döngüde saniyeler içinde 3 Apple, 3 Android ve 3 Windows paketi birden gönderir.
 *   **Chaos Counters:** Ekranda hangi platforma kaç bin paket gönderildiğini anlık takip eden canlı sayaçlar.

@@ -27,7 +27,7 @@ uint16_t ACCENT=0xFAC0;  // Orange
 uint16_t SUBTEXT=0xCE79; // Warm White
 
 #ifndef NOVA_VERSION
-  #define NOVA_VERSION "1.2.6 Apocalypse Gold" 
+  #define NOVA_VERSION "1.2.6 Aurum" 
 #endif
 
 #define AUTHOR "Antigravity & RedRiveRR"
