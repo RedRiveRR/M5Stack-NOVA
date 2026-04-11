@@ -9,8 +9,6 @@
 [![Platform](https://img.shields.io/badge/Platform-M5StickC--Plus2-black.svg)]()
 [![Language](https://img.shields.io/badge/Aray%C3%BCz-T%C3%BCrk%C3%A7e-red.svg)]()
 
-<img src="logo.png" width="400" alt="NOVA Operational Logo">
-
 **NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
 
 [Modüller](#-operasyonel-modüller) • [Sistem Mimarisi](#-sistem-mimarisi) • [Warfare Center](#-warfare-center-v12) • [Aurum Core](#-universal-maelstrom-v20) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım)
