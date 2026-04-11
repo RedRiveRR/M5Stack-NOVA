@@ -40,8 +40,8 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 *   **Android Warfare Suite:** Google Fast Pair protokolü üzerinden Android cihazları meşgul eden DoS motoru.
 *   **Windows Warfare Suite:** Microsoft Swift Pair protokolü üzerinden Windows 10/11 cihazlarına popup yağdırır (Surface Mouse, Xbox, Klavye taklitleri).
 
-### 🌪️ 4. Universal Maelstrom v2.0 (Apocalypse)
-> **v1.2.5'te güncellendi!** Nova'nın durdurulamaz en güçlü kaos modu.
+### 🌪️ 4. Universal Maelstrom v2.0 (Apocalypse Gold)
+> **v1.2.6'da güncellendi!** Nova'nın durdurulamaz en güçlü kaos modu.
 
 *   **9x Burst Mode:** Her döngüde saniyeler içinde 3 Apple, 3 Android ve 3 Windows paketi birden gönderir.
 *   **Chaos Counters:** Ekranda hangi platforma kaç bin paket gönderildiğini anlık takip eden canlı sayaçlar.

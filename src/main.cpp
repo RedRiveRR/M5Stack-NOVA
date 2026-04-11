@@ -4276,11 +4276,11 @@ void badusb_displayDeviceInfo(USBDeviceInfo* device) {
 
   DISP.setTextSize(SMALL_TEXT);
   if (device->isSuspicious) {
-    DISP.setTextColor(TFT_RED);
+    DISP.setTextColor(ACCENT);
     DISP.println("!SUSPICIOUS!");
     play_alert_beep();
   } else if (device->suspicionReason=="HID") {
-    DISP.setTextColor(TFT_YELLOW);
+    DISP.setTextColor(FGCOLOR);
     DISP.println("HID-Only Device");
     play_alert_beep();
 
@@ -4298,14 +4298,14 @@ void badusb_displayDeviceInfo(USBDeviceInfo* device) {
   sprintf(vidpid, "%04X:%04X", device->vid, device->pid);
   DISP.println(vidpid);
 
-  DISP.setTextColor(TFT_CYAN);
+  DISP.setTextColor(FGCOLOR);
   DISP.print("Class: ");
-  DISP.setTextColor(TFT_WHITE);
+  DISP.setTextColor(SUBTEXT);
   DISP.println(badusb_getUSBClassName(device->deviceClass));
 
-  DISP.setTextColor(TFT_CYAN);
+  DISP.setTextColor(FGCOLOR);
   DISP.print("Interfaces: ");
-  DISP.setTextColor(TFT_WHITE);
+  DISP.setTextColor(SUBTEXT);
   DISP.println(device->numInterfaces);
 
   for (int i = 0; i < device->numInterfaces && i < 8; i++) {
