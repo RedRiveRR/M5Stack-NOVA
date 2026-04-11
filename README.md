@@ -1,5 +1,5 @@
 # 🌌 NOX (Nova Operational X-Sentry)
-### *M5Stack Gömülü Sistemler İçin Çok Amaçlı Siber Güvenlik ve Ağ Analiz Platformu*
+### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
 
 <div align="center">
 
@@ -8,77 +8,73 @@
 [![Platform](https://img.shields.io/badge/Platform-ESP32--S3-black.svg)]()
 [![Language](https://img.shields.io/badge/Arayüz-Türkçe-red.svg)]()
 
-![NOVA Operational Logo](logo.png)
+<img src="logo.png" width="400" alt="NOVA Operational Logo">
 
-**NOVA**, M5Stack donanım mimarisi üzerine inşa edilmiş, hafif (lightweight) ancak yüksek performanslı bir siber güvenlik araştırma firmware'idir. Saha operasyonları, sızma testleri ve dijital sinyal analizi prototipleri için optimize edilmiştir.
+**NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
 
-[Özellikler](#-temel-kabiliyetler) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Etik Uyarı](#-sorumluluk-reddi)
+[Modüller](#-operasyonel-modüller) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Etik Uyarı](#-sorumluluk-reddi)
 
 </div>
 
 ---
 
-## 🚀 Temel Kabiliyetler
+## 🚀 Operasyonel Modüller
 
-NOVA, üç ana operasyonel dikey üzerinde uzmanlaşmış modüller içerir:
+NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldırı ve spam vektörleri içerir:
 
-### 📡 1. Sinyal ve Spektrum Analizi
-*   **BadUSB Denetleyici (HID Analysis):** OTG protokolü üzerinden bağlı olan çevre birimlerinin HID tanım tablolarını (Descriptor Tables) dinamik olarak analiz eder ve Rubber Ducky veya O.MG gibi "Malicious HID" cihazlarını imza tabanlı (Signature-based) olarak tespit eder.
-*   **BLE Sentry:** 2.4GHz spektrumundaki Bluetooth Low Energy reklam paketlerini (Adv-Packets) sniff eder, anormallikleri (Flooding/Spam) tespit eder ve RSSI tabanlı mesafe tahmini yapar.
-*   **Deauth/DoS Dedektörü:** WiFi yönetim çerçevelerini (Management Frames) gerçek zamanlı olarak dinler ve aktif bağlantı koparma saldırılarını anlık olarak raporlar.
+### 📡 1. Kablosuz Ağ (WiFi) Operasyonları
+*   **Beacon Spam:** Spektrum üzerinde saniyeler içinde yüzlerce sahte SSID (Ağ adı) oluşturarak ağ kirliliği ve stres testi yapar.
+*   **Deauthentication:** Hedeflenen WiFi istemcilerinin veya tüm ağın bağlantısını koparmak için yönetim paketleri gönderir.
+*   **Nova Captive Portal:** Sahte giriş sayfaları (Phishing) oluşturarak ağ üzerinden kullanıcı verilerini test etmek için HTTP/DNS yönlendirmesi sağlar.
 
-### 🌐 2. Ağ Güvenlik Araştırmaları
-*   **Rogue AP (PineAP) Tespiti:** Karma saldırılarını (Karma Attacks) ve sahte erişim noktalarını BSSID/SSID korelasyonu ile ortaya çıkarır.
-*   **Nova Captive Framework:** Sosyal mühendislik (Social Engineering) testleri için DNS/HTTP yönlendirmeli, özelleştirilebilir kimlik avı portalı sağlar.
-*   **Beacon Flooding:** Stres testleri ve ağ görünürlüğü analizleri için yüzlerce sanal SSID yayını yapma kapasitene sahiptir.
+### 📶 2. Bluetooth (BLE) Manipülasyonu
+*   **AppleJuice (iOS Spam):** Apple cihazlar üzerinde eşleşme ve kontrol bildirimleri oluşturarak Apple BLE yığınını manipüle eder.
+*   **Android/Windows Spam:** SwiftPair ve Google FastPair protokollerini kullanarak cihazlara sürekli bildirim ve eşleşme isteği gönderir.
+*   **BLE Sniffer & Flooder:** 2.4GHz Bluetooth paketlerini yakalar ve spektrumu geçersiz paketlerle doldurur.
 
-### 📶 3. Bluetooth Operasyonları
-*   **BT Proximity Testing (AppleJuice):** iOS ve Android protokolleri arasındaki Bluetooth eşleşme süreçlerini simüle eden paket enjeksiyon modülleri.
-*   **SwiftPair & FastPair Analizi:** Modern işletim sistemlerinin "Hızlı Eşleşme" protokollerinin dayanıklılığını test eden paket generatörleri.
+### ⌨️ 3. HID & USB (BadUSB)
+*   **BadUSB Payloads:** Cihaza takılan sistemlerde önceden tanımlanmış komutları (Ducky Script benzeri) ışık hızında çalıştırarak otomatik konfigürasyon veya sızma testi yapar.
+*   **HID Analysis:** Bağlı cihazların HID descriptolarını kontrol eder.
+
+### 📺 4. Kızılötesi (IR) Kontrol
+*   **TV-B-Gone:** Geniş bir IR kütüphanesi kullanarak her türlü televizyon ve projektörü kapatma veya kontrol etme sinyali gönderir.
 
 ---
 
 ## 🛠 Teknik Mimari
 
-| Bileşen | Detay |
+| Katman | Teknoloji |
 | :--- | :--- |
-| **Donanım** | ESP32, ESP32-S3 (M5Stack Serisi) |
-| **Ekran Sürücüsü** | M5Unified / M5GFX (Yüksek Performanslı Framebuffer) |
-| **Hafıza Yönetimi** | EEPROM tabanlı kalıcı ayarlar ve SD-SPI entegrasyonu |
-| **Ağ Yığını** | Gömülü LwIP ve BLE-Stack enjeksiyon modülleri |
+| **İşlemci** | ESP32-S3 (M5StickC Plus2 / Cardputer / StampS3) |
+| **Görsel** | M5Unified / M5GFX (Yüksek FPS Boot Animasyonu) |
+| **Dil** | C++ / Arduino / PlatformIO |
+| **Ağ** | WiFi 802.11 b/g/n & Bluetooth Low Energy (BLE) |
 
 ---
 
 ## 📦 Kurulum ve Dağıtım
 
-### ⚡ Hızlı Dağıtım (M5Burner)
-En güncel kararlı (stable) sürümleri doğrudan **M5Burner** üzerinden dağıtıyoruz:
-1.  **M5Burner** uygulamasını çalıştırın.
-2.  Sol menüden cihaz ailenizi seçin.
-3.  Arama motoruna **"Nova"** girin.
-4.  **RedRiveRR** onaylı firmware'i cihazınıza flashlayın.
+### ⚡ M5Burner İle Yükleme
+En pratik yükleme yöntemi:
+1.  **M5Burner** uygulamasını indirin ve açın.
+2.  Sol menüden cihazınızı seçin.
+3.  Arama kutusuna **"Nova"** yazın.
+4.  **RedRiveRR** tarafından yayınlanan güncel sürümü **Burn** diyerek cihazınıza atın.
 
-### 🛠 Geliştirme Ortamı (PlatformIO)
-Kaynak koddan özelleştirmek ve yerel derleme yapmak için:
+### 💻 Geliştiriciler İçin (Derleme)
 ```bash
-# Repo klonlama
 git clone https://github.com/RedRiveRR/M5Stack-NOVA.git
-
-# Derleme ve Yükleme
-pio run -e stick_c_plus2 -t upload
+cd M5Stack-NOVA
+pio run -t upload
 ```
 
 ---
 
-## ⚖️ Sorumluluk Reddi ve Yasal Uyarı
-
-Bu yazılım, yalnızca **bilgi güvenliği uzmanları, sistem yöneticileri ve araştırma görevlileri** tarafından profesyonel sızma testi senaryoları ve eğitim materyali olarak kullanılmak üzere tasarlanmıştır.
-
-> [!CAUTION]
-> **YASAL UYARI:** Yazılımın yetkisiz kurum veya şahıs cihazları üzerinde kullanılması pek çok yargı sisteminde ağır suç teşkil edebilir. Yazılımın operasyonel kullanımından doğacak her türlü hukuki sonuçtan doğrudan kullanıcı sorumludur. Bu projenin geliştiricileri, yazılımın misuse (kötüye kullanımı) durumunda hiçbir sorumluluk kabul etmemektedir.
+## ⚖️ Sorumluluk Reddi (Legal Disclaimer)
+Bu yazılım sadece **etik siber güvenlik araştırması ve eğitim amaçlı** geliştirilmiştir. İzin alınmamış sistemler, cihazlar veya ağlar üzerinde kullanılması kesinlikle yasaktır ve yasal sonuçlar doğurabilir. Kullanıcı, bu aracın kullanımından doğacak her türlü hukuki ve fiziksel sorumluluğu peşinen kabul eder. **Geliştirici (RedRiveRR), yazılımın kötüye kullanımından sorumlu tutulamaz.**
 
 ---
 
 <div align="center">
-  Mimari ve Geliştirme: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
+  Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
 </div>
