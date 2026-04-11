@@ -1,9 +1,9 @@
-# 🌌 NOVA v1.1.0
+# 🌌 NOVA v1.1.1
 ### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Sürüm-v1.1.0-gold.svg)]()
+[![Version](https://img.shields.io/badge/Sürüm-v1.1.1-gold.svg)]()
 [![License](https://img.shields.io/badge/Lisans-GPL--3.0-blue.svg)]()
 [![Build](https://img.shields.io/badge/Derleme-Başarılı-brightgreen.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-ESP32--S3-black.svg)]()
@@ -13,7 +13,7 @@
 
 **NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
 
-[Modüller](#-operasyonel-modüller) • [iOS Warfare](#-ios-warfare-suite-v11) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Changelog](#-changelog)
+[Modüller](#-operasyonel-modüller) • [iOS Warfare](#-ios-warfare-suite-v11) • [Android Warfare](#-android-warfare-suite-v11-beta) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Changelog](#-changelog)
 
 </div>
 
@@ -46,14 +46,26 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 - Her pakette `esp_fill_random()` ile rastgele authentication tag → iPhone her birini yeni cihaz sanır
 - `delay(20)` stabilite garantisi ile crash-free sürekli yayın
 
-### ⌨️ 4. HID & USB (BadUSB)
+### 🤖 4. Android Warfare Suite (v1.1 Beta)
+> **v1.1.1'da yeni!** Google Fast Pair protokolünü kullanarak Android cihazlar için geliştirilmiş DoS motoru.
+
+*   **Fast Pair Flood:** Google'ın yakın cihaz algılama protokolünü (0xFE2C) saniyede onlarca kez tetikler.
+*   **Android Mix:** 250'den fazla farklı Android cihaz modelini (Pixel, Samsung, JBL vb.) sırayla taklit ederek filtreleri geçer.
+*   **Samsung/Pixel Siege:** Belirli modellere (S23 Ultra, Pixel Buds vb.) odaklanmış özel spam paketleri gönderir.
+
+**Teknik Detaylar:**
+- Google LLC (0xFE2C) Service Data yapısı
+- 3-byte random model ID desteği (Mix modunda)
+- iOS versiyonuna benzer 20ms stabilite döngüsü
+
+### ⌨️ 5. HID & USB (BadUSB)
 *   **BadUSB Payloads:** Cihaza takılan sistemlerde önceden tanımlanmış komutları (Ducky Script benzeri) ışık hızında çalıştırarak otomatik konfigürasyon veya sızma testi yapar.
 *   **HID Analysis:** Bağlı cihazların HID descriptor'larını kontrol eder.
 
-### 📺 5. Kızılötesi (IR) Kontrol
+### 📺 6. Kızılötesi (IR) Kontrol
 *   **TV-B-Gone:** Geniş bir IR kütüphanesi kullanarak her türlü televizyon ve projektörü kapatma veya kontrol etme sinyali gönderir.
 
-### 🛡️ 6. Savunma Modülleri
+### 🛡️ 7. Savunma Modülleri
 *   **Deauth Hunter:** Ortamdaki WiFi deauth saldırılarını algılar ve uyarı verir.
 *   **BLE Hunter:** Çevredeki şüpheli BLE cihazlarını (Flipper Zero, AirTag tracker vb.) tespit eder.
 *   **Pineapple Hunter:** Sahte erişim noktalarını (Evil Twin) tespit etmek için SSID analizi yapar.
@@ -69,6 +81,7 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 | **Dil** | C++ / Arduino / PlatformIO |
 | **Ağ** | WiFi 802.11 b/g/n & Bluetooth Low Energy (BLE) |
 | **iOS Warfare** | Apple Nearby Action (0x0F) / Proximity Pairing (0x07) |
+| **Android Warfare** | Google Fast Pair (0xFE2C) |
 
 ---
 
@@ -91,6 +104,11 @@ pio run -t upload
 ---
 
 ## 📋 Changelog
+
+### v1.1.1 — Android Warfare Suite Beta (2026-04-11)
+- ✅ **Android Warfare Suite** eklendi: Fast Pair Flood, Android Mix, Samsung/Pixel Siege
+- ✅ Google Fast Pair (0xFE2C) protokolü ile Android bildirim spam desteği
+- ✅ 250+ Android modelini içeren veritabanı ile rotasyonel saldırı (Mix Mode)
 
 ### v1.1.0 — iOS Warfare DoS Engine (2026-04-11)
 - ✅ **iOS Warfare Suite** eklendi: AirTag Phantom, HomeKit Siege, SA Turbo, SA Mix
@@ -121,5 +139,5 @@ Bu yazılım sadece **etik siber güvenlik araştırması ve eğitim amaçlı** 
 ---
 
 <div align="center">
-  <b>NOVA v1.1.0</b> · Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
+  <b>NOVA v1.1.1</b> · Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
 </div>

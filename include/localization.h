@@ -30,6 +30,7 @@ enum StringID {
   STR_MN_TV, STR_MN_BT, STR_MN_WF, STR_MN_QR, STR_MN_USB, STR_QR_BACK, STR_MN_WEB,
   STR_PN_AT_PH, STR_PN_HK_SG, STR_PN_SA_V2, STR_PN_IK_DW,
   STR_MN_IOS, STR_OPT_NUCLEAR, STR_OPT_SNIPER, STR_OPT_TURBO, STR_OPT_MIX,
+  STR_MN_AND, STR_PN_FP_FL, STR_PN_AND_MIX, STR_PN_SAMSUNG, STR_PN_PIXEL,
   NUM_STRINGS
 };
 
@@ -59,7 +60,8 @@ const char* const locales[][NUM_STRINGS] = {
     "SSID length should be between 2 and 32\nInvalid: ?,$,\",[,\\,],+\n\nType the SSID\nPress Enter to Confirm\n\n",
     "TV-B-Gone", "Bluetooth", "WiFi", "QR Codes", "BadUSB Hunter", "Back", "Remote Dashboard",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
-    "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode"
+    "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode",
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
   },
   // 1: TR
   {
@@ -86,7 +88,8 @@ const char* const locales[][NUM_STRINGS] = {
     "SSID uzunlugu 2-32 arasi olmali\nGecersiz: ?,$,\",[,\\,],+\n\nSSID Girin\nOnaylamak icin Enter Basin\n\n",
     "TV-B-Gone", "Bluetooth", "WiFi", "QR Kodlari", "BadUSB Avcisi", "Geri", "Uzak Kontrol",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
-    "iOS Warfare", "NUCLEAR Modu", "SNIPER Modu", "TURBO Modu", "MIX Modu"
+    "iOS Warfare", "NUCLEAR Modu", "SNIPER Modu", "TURBO Modu", "MIX Modu",
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
   },
   // 2: IT
   {
@@ -113,7 +116,8 @@ const char* const locales[][NUM_STRINGS] = {
     "SSID deve essere tra 2 e 32\nInvalido: ?,$,\",[,\\,],+\n\nScrivi l'SSID\nPremi Invio per Confermare\n\n",
     "TV-B-Gone", "Bluetooth", "WiFi", "Codici QR", "BadUSB Hunter", "Indietro", "Remote Dashboard",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
-    "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode"
+    "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode",
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
   },
   // 3: PT
   {
@@ -140,7 +144,8 @@ const char* const locales[][NUM_STRINGS] = {
     "Tamanho entre 2 e 32\nInvalidos: ?,$,\",[,\\,],+\n\nDigite o SSID\nEnter para Confirmar\n\n",
     "TV-B-Gone", "Bluetooth", "WiFi", "Codigos QR", "BadUSB Hunter", "Voltar", "Remote Dashboard",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
-    "iOS Warfare", "Modo NUCLEAR", "Modo SNIPER", "Modo TURBO", "Modo MIXTO"
+    "iOS Warfare", "Modo NUCLEAR", "Modo SNIPER", "Modo TURBO", "Modo MIXTO",
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
   },
   // 4: FR
   {
@@ -166,7 +171,8 @@ const char* const locales[][NUM_STRINGS] = {
     "Connexion", "Utiliser votre compte Google", "Adresse e-mail", "Mot de passe", "Merci de vous connecter pour obtenir une navigation sécurisée.", "Suivant", "Connexion en cours. Merci de patienter quelques instants.",
     "La longueur du SSID doit être entre 2 et 32\nInvalide: ?,$,\",[,\\,],+\n\nÉcrivez le SSID\nPressez Entrée pour Valider\n\n",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
-    "iOS Warfare", "Mode NUCLEAR", "Mode SNIPER", "Mode TURBO", "Mode MIX"
+    "iOS Warfare", "Mode NUCLEAR", "Mode SNIPER", "Mode TURBO", "Mode MIX",
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
   }
 };
 
@@ -294,6 +300,11 @@ const char* const locales[][NUM_STRINGS] = {
 #define TXT_OPT_SNIPER locales[selected_language][STR_OPT_SNIPER]
 #define TXT_OPT_TURBO locales[selected_language][STR_OPT_TURBO]
 #define TXT_OPT_MIX locales[selected_language][STR_OPT_MIX]
+#define TXT_MN_AND locales[selected_language][STR_MN_AND]
+#define TXT_PN_FP_FL locales[selected_language][STR_PN_FP_FL]
+#define TXT_PN_AND_MIX locales[selected_language][STR_PN_AND_MIX]
+#define TXT_PN_SAMSUNG locales[selected_language][STR_PN_SAMSUNG]
+#define TXT_PN_PIXEL locales[selected_language][STR_PN_PIXEL]
 #define TXT_QR_BACK locales[selected_language][STR_QR_BACK]
 
 #endif

