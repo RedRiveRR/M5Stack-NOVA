@@ -31,6 +31,8 @@ enum StringID {
   STR_PN_AT_PH, STR_PN_HK_SG, STR_PN_SA_V2, STR_PN_IK_DW,
   STR_MN_IOS, STR_OPT_NUCLEAR, STR_OPT_SNIPER, STR_OPT_TURBO, STR_OPT_MIX,
   STR_MN_AND, STR_PN_FP_FL, STR_PN_AND_MIX, STR_PN_SAMSUNG, STR_PN_PIXEL,
+  STR_MN_WIN, STR_PN_SP_FL, STR_PN_WIN_MIX, STR_PN_W_MOUSE, STR_PN_W_KEYBOARD,
+  STR_MN_MAE, STR_MN_WF_CTR,
   NUM_STRINGS
 };
 
@@ -61,7 +63,9 @@ const char* const locales[][NUM_STRINGS] = {
     "TV-B-Gone", "Bluetooth", "WiFi", "QR Codes", "BadUSB Hunter", "Back", "Remote Dashboard",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
     "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode",
-    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege",
+    "Windows Warfare", "Swift Pair Flood", "Windows Mix", "Surface Mouse", "Surface Keyboard",
+    "UNIVERSAL MAELSTROM", "WARFARE CENTER"
   },
   // 1: TR
   {
@@ -89,7 +93,9 @@ const char* const locales[][NUM_STRINGS] = {
     "TV-B-Gone", "Bluetooth", "WiFi", "QR Kodlari", "BadUSB Avcisi", "Geri", "Uzak Kontrol",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
     "iOS Warfare", "NUCLEAR Modu", "SNIPER Modu", "TURBO Modu", "MIX Modu",
-    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege",
+    "Windows Warfare", "Swift Pair Flood", "Windows Mix", "Surface Mouse", "Surface Keyboard",
+    "EVRENSEL MAELSTROM", "SAVAS MERKEZI"
   },
   // 2: IT
   {
@@ -117,7 +123,9 @@ const char* const locales[][NUM_STRINGS] = {
     "TV-B-Gone", "Bluetooth", "WiFi", "Codici QR", "BadUSB Hunter", "Indietro", "Remote Dashboard",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
     "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode",
-    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege",
+    "Windows Warfare", "Swift Pair Flood", "Windows Mix", "Surface Mouse", "Surface Keyboard",
+    "UNIVERSAL MAELSTROM", "WARFARE CENTER"
   },
   // 3: PT
   {
@@ -145,7 +153,9 @@ const char* const locales[][NUM_STRINGS] = {
     "TV-B-Gone", "Bluetooth", "WiFi", "Codigos QR", "BadUSB Hunter", "Voltar", "Remote Dashboard",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
     "iOS Warfare", "Modo NUCLEAR", "Modo SNIPER", "Modo TURBO", "Modo MIXTO",
-    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege",
+    "Windows Warfare", "Swift Pair Flood", "Windows Mix", "Surface Mouse", "Surface Keyboard",
+    "UNIVERSAL MAELSTROM", "WARFARE CENTER"
   },
   // 4: FR
   {
@@ -170,9 +180,12 @@ const char* const locales[][NUM_STRINGS] = {
     "5 secondes", "10 secondes", "15 secondes", "30 secondes", "60 secondes", "120 minutes", "240 minutes",
     "Connexion", "Utiliser votre compte Google", "Adresse e-mail", "Mot de passe", "Merci de vous connecter pour obtenir une navigation sécurisée.", "Suivant", "Connexion en cours. Merci de patienter quelques instants.",
     "La longueur du SSID doit être entre 2 et 32\nInvalide: ?,$,\",[,\\,],+\n\nÉcrivez le SSID\nPressez Entrée pour Valider\n\n",
+    "TV-B-Gone", "Bluetooth", "WiFi", "QR Codes", "BadUSB Hunter", "Retour", "Remote Dashboard",
     "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
     "iOS Warfare", "Mode NUCLEAR", "Mode SNIPER", "Mode TURBO", "Mode MIX",
-    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege"
+    "Android Warfare", "Fast Pair Flood", "Android Mix", "Samsung Siege", "Pixel Buds Siege",
+    "Windows Warfare", "Swift Pair Flood", "Windows Mix", "Surface Mouse", "Surface Keyboard",
+    "UNIVERSAL MAELSTROM", "WARFARE CENTER"
   }
 };
 
@@ -305,6 +318,13 @@ const char* const locales[][NUM_STRINGS] = {
 #define TXT_PN_AND_MIX locales[selected_language][STR_PN_AND_MIX]
 #define TXT_PN_SAMSUNG locales[selected_language][STR_PN_SAMSUNG]
 #define TXT_PN_PIXEL locales[selected_language][STR_PN_PIXEL]
+#define TXT_MN_WIN locales[selected_language][STR_MN_WIN]
+#define TXT_PN_SP_FL locales[selected_language][STR_PN_SP_FL]
+#define TXT_PN_WIN_MIX locales[selected_language][STR_PN_WIN_MIX]
+#define TXT_PN_W_MOUSE locales[selected_language][STR_PN_W_MOUSE]
+#define TXT_PN_W_KEYBOARD locales[selected_language][STR_PN_W_KEYBOARD]
+#define TXT_MN_MAE locales[selected_language][STR_MN_MAE]
+#define TXT_MN_WF_CTR locales[selected_language][STR_MN_WF_CTR]
 #define TXT_QR_BACK locales[selected_language][STR_QR_BACK]
 
 #endif

@@ -257,5 +257,17 @@ DeviceType android_models[] = {
 
 int android_models_count = (sizeof(android_models) / sizeof(android_models[0]));
 
+const char* windows_models[] = {
+    "Surface Mouse",
+    "Surface Keyboard",
+    "Xbox Controller",
+    "Microsoft Mouse",
+    "Surface Headset",
+    "Comfort Mouse",
+    "Desktop Keyboard",
+    "Surface Pen"
+};
+int windows_models_count = sizeof(windows_models) / sizeof(windows_models[0]);
+
 BLEAdvertisementData oAdvertisementData = BLEAdvertisementData();
 BLEAdvertising *pAdvertising;

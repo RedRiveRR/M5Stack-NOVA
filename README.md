@@ -1,19 +1,19 @@
-# 🌌 NOVA v1.1.1
+# 🌌 NOVA v1.2.5 Apocalypse
 ### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Sürüm-v1.1.1-gold.svg)]()
+[![Version](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.2.5--Apocalypse-gold.svg)]()
 [![License](https://img.shields.io/badge/Lisans-GPL--3.0-blue.svg)]()
-[![Build](https://img.shields.io/badge/Derleme-Başarılı-brightgreen.svg)]()
+[![Build](https://img.shields.io/badge/Derleme-Ba%C5%9Far%C4%B1l%C4%B1-brightgreen.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-ESP32--S3-black.svg)]()
-[![Language](https://img.shields.io/badge/Arayüz-Türkçe-red.svg)]()
+[![Language](https://img.shields.io/badge/Aray%C3%BCz-T%C3%BCrk%C3%A7e-red.svg)]()
 
 <img src="logo.png" width="400" alt="NOVA Operational Logo">
 
 **NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
 
-[Modüller](#-operasyonel-modüller) • [iOS Warfare](#-ios-warfare-suite-v11) • [Android Warfare](#-android-warfare-suite-v11-beta) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Changelog](#-changelog)
+[Modüller](#-operasyonel-modüller) • [Warfare Center](#-warfare-center-v12) • [Apocalypse Mode](#-universal-maelstrom-v20) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Changelog](#-changelog)
 
 </div>
 
@@ -33,30 +33,19 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 *   **Android/Windows Spam:** SwiftPair ve Google FastPair protokollerini kullanarak cihazlara sürekli bildirim ve eşleşme isteği gönderir.
 *   **BLE Sniffer & Flooder:** 2.4GHz Bluetooth paketlerini yakalar ve spektrumu geçersiz paketlerle doldurur.
 
-### 🍎 3. iOS Warfare Suite (v1.1)
-> **v1.1.0'da yeni!** Modern iPhone'lar (iOS 17 — 26.x) için özel olarak geliştirilmiş DoS bildirim motoru.
+### ⚔️ 3. Warfare Center (Savaş Merkezi)
+> **v1.2.0'da yeni!** Tüm ofansif BLE modüllerinin toplandığı ana saldırı üssü.
 
-*   **AirTag Phantom:** Apple Nearby Action protokolü üzerinden sürekli popup bildirimi yağdırır.
-*   **HomeKit Siege:** HomePod/HomeKit eşleşme popup'ları oluşturarak hedef cihazı meşgul eder.
-*   **SA Turbo:** SourApple Nearby Action flood — her 20ms'de yeni kimlikle popup tetikler.
-*   **SA Mix:** 15 farklı Apple bildirim tipi arasında rastgele geçiş yaparak iOS filtrelemeyi bypass eder.
+*   **iOS Warfare Suite:** iPhone'lar için optimize edilmiş DoS motoru (AirTag, HomeKit, SA Turbo).
+*   **Android Warfare Suite:** Google Fast Pair protokolü üzerinden Android cihazları meşgul eden DoS motoru.
+*   **Windows Warfare Suite:** Microsoft Swift Pair protokolü üzerinden Windows 10/11 cihazlarına popup yağdırır (Surface Mouse, Xbox, Klavye taklitleri).
 
-**Teknik Detaylar:**
-- `addData()` tabanlı Manufacturer Specific AD yapısı (17-byte Nearby Action paketi)
-- Her pakette `esp_fill_random()` ile rastgele authentication tag → iPhone her birini yeni cihaz sanır
-- `delay(20)` stabilite garantisi ile crash-free sürekli yayın
+### 🌪️ 4. Universal Maelstrom v2.0 (Apocalypse)
+> **v1.2.5'te güncellendi!** Nova'nın durdurulamaz en güçlü kaos modu.
 
-### 🤖 4. Android Warfare Suite (v1.1 Beta)
-> **v1.1.1'da yeni!** Google Fast Pair protokolünü kullanarak Android cihazlar için geliştirilmiş DoS motoru.
-
-*   **Fast Pair Flood:** Google'ın yakın cihaz algılama protokolünü (0xFE2C) saniyede onlarca kez tetikler.
-*   **Android Mix:** 250'den fazla farklı Android cihaz modelini (Pixel, Samsung, JBL vb.) sırayla taklit ederek filtreleri geçer.
-*   **Samsung/Pixel Siege:** Belirli modellere (S23 Ultra, Pixel Buds vb.) odaklanmış özel spam paketleri gönderir.
-
-**Teknik Detaylar:**
-- Google LLC (0xFE2C) Service Data yapısı
-- 3-byte random model ID desteği (Mix modunda)
-- iOS versiyonuna benzer 20ms stabilite döngüsü
+*   **9x Burst Mode:** Her döngüde saniyeler içinde 3 Apple, 3 Android ve 3 Windows paketi birden gönderir.
+*   **Chaos Counters:** Ekranda hangi platforma kaç bin paket gönderildiğini anlık takip eden canlı sayaçlar.
+*   **Apocalypse Intensity:** Sinyal spektrumunu tamamen domine eden yüksek yoğunluklu BLE yayını.
 
 ### ⌨️ 5. HID & USB (BadUSB)
 *   **BadUSB Payloads:** Cihaza takılan sistemlerde önceden tanımlanmış komutları (Ducky Script benzeri) ışık hızında çalıştırarak otomatik konfigürasyon veya sızma testi yapar.
@@ -82,6 +71,8 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 | **Ağ** | WiFi 802.11 b/g/n & Bluetooth Low Energy (BLE) |
 | **iOS Warfare** | Apple Nearby Action (0x0F) / Proximity Pairing (0x07) |
 | **Android Warfare** | Google Fast Pair (0xFE2C) |
+| **Windows Warfare** | Microsoft Swift Pair (0x0006) |
+| **Maelstrom** | Multi-Protocol Chaos Burst (9x per loop) |
 
 ---
 

