@@ -9,17 +9,17 @@
 [![Platform](https://img.shields.io/badge/Platform-M5StickC--Plus2-black.svg)]()
 [![Language](https://img.shields.io/badge/Aray%C3%BCz-T%C3%BCrk%C3%A7e-red.svg)]()
 
-**NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
+**NOVA Aurum**, M5Stack donanım platformunun sınırlarını zorlamak için RedRiveRR tarafından sıfırdan geliştirilmiş, bağımsız bir **Özel Üretim (Custom) Yazılım** gücüdür. Standart bir cihazı, kablosuz ağlar, Bluetooth spektrumu ve HID protokolleri üzerinde tam hakimiyet kuran profesyonel bir ofansif istasyona dönüştürür.
 
-[Modüller](#-operasyonel-modüller) • [Sistem Mimarisi](#-sistem-mimarisi) • [Warfare Center](#-warfare-center-v12) • [Aurum Core](#-universal-maelstrom-v20) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım)
+[Modüller](#-operasyonel-modüller) • [Sistem Mimarisi](#-sistem-mimarisi) • [Warfare Center](#-warfare-center-v12) • [Aurum Core](#-universal-maelstrom-v20) • [Kurulum](#-kurulum-ve-dağıtım)
 
 </div>
 
 ---
 
-## 🏛️ Sistem Mimarisi (Exploded View)
+## 🏛️ Sistem Mimarisi (The Core Logic)
 
-Nova Aurum, donanım gücü ile yazılım zekasının mükemmel birleşiminden oluşur. Aşağıdaki teknik şema, M5StickC Plus2 donanımı üzerindeki **Aurum Engine** çekirdeğini ve sinyal enjeksiyon katmanlarını göstermektedir.
+Nova Aurum, standart donanımın sahip olduğu "uyuyan" gücü uyandıran özel bir yazılım mimarisidir. Aşağıdaki teknik şema, M5Stack donanımı uzerinde koşan ve bizim tarafımızdan optimize edilen **Aurum Engine** yazılım katmanını göstermektedir.
 
 <div align="center">
 <img src="architecture_3d.png" width="600" alt="NOVA Aurum 3D System Architecture">
