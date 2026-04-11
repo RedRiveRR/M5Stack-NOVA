@@ -27,7 +27,9 @@ enum StringID {
   STR_PINK, STR_COLOR, STR_SET_FGCOLOR, STR_SET_BGCOLOR, STR_THEME,
   STR_5SEC, STR_10SEC, STR_15SEC, STR_30SEC, STR_60SEC, STR_120MIN, STR_240MIN,
   STR_PL_TITLE, STR_PL_SUBTITLE, STR_PL_EMAIL, STR_PL_PASS, STR_PL_MSG, STR_PL_BTN, STR_PL_WAIT, STR_PL_SSID_INST,
-  STR_MN_TV, STR_MN_BT, STR_MN_WF, STR_MN_QR, STR_MN_USB, STR_QR_BACK,
+  STR_MN_TV, STR_MN_BT, STR_MN_WF, STR_MN_QR, STR_MN_USB, STR_QR_BACK, STR_MN_WEB,
+  STR_PN_AT_PH, STR_PN_HK_SG, STR_PN_SA_V2, STR_PN_IK_DW,
+  STR_MN_IOS, STR_OPT_NUCLEAR, STR_OPT_SNIPER, STR_OPT_TURBO, STR_OPT_MIX,
   NUM_STRINGS
 };
 
@@ -55,7 +57,9 @@ const char* const locales[][NUM_STRINGS] = {
     "5 seconds", "10 seconds", "15 seconds", "30 seconds", "60 seconds", "120 minutes", "240 minutes",
     "Sign in", "Sign In With Google", "Email", "Password", "Please log in to browse securely.", "Next", "Please wait a few minutes.\nSoon you will be able to access the internet.", 
     "SSID length should be between 2 and 32\nInvalid: ?,$,\",[,\\,],+\n\nType the SSID\nPress Enter to Confirm\n\n",
-    "TV-B-Gone", "Bluetooth", "WiFi", "QR Codes", "BadUSB Hunter", "Back"
+    "TV-B-Gone", "Bluetooth", "WiFi", "QR Codes", "BadUSB Hunter", "Back", "Remote Dashboard",
+    "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
+    "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode"
   },
   // 1: TR
   {
@@ -80,7 +84,9 @@ const char* const locales[][NUM_STRINGS] = {
     "5 saniye", "10 saniye", "15 saniye", "30 saniye", "60 saniye", "120 dakika", "240 dakika",
     "Giris Yap", "Google ile Giris Yap", "E-posta", "Sifre", "Lutfen guvenle goz atmak icin giris yapin.", "Ileri", "Lutfen birkac dakika bekleyin.\nYakinda internete erisebileceksiniz.",
     "SSID uzunlugu 2-32 arasi olmali\nGecersiz: ?,$,\",[,\\,],+\n\nSSID Girin\nOnaylamak icin Enter Basin\n\n",
-    "TV-B-Gone", "Bluetooth", "WiFi", "QR Kodlari", "BadUSB Avcisi", "Geri"
+    "TV-B-Gone", "Bluetooth", "WiFi", "QR Kodlari", "BadUSB Avcisi", "Geri", "Uzak Kontrol",
+    "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
+    "iOS Warfare", "NUCLEAR Modu", "SNIPER Modu", "TURBO Modu", "MIX Modu"
   },
   // 2: IT
   {
@@ -103,9 +109,11 @@ const char* const locales[][NUM_STRINGS] = {
     "Rosso", "Magenta", "Giallo", "Bianco", "Arancio", "Giallo Verde",
     "Rosa", "Colore Pers.", "COLORE TESTO", "COLORE SFONDO", "Tema Colori",
     "5 secondi", "10 secondi", "15 secondi", "30 secondi", "60 secondi", "120 minuti", "240 minuti",
-    "Accedi", "Utilizza il tuo Account Google", "Email", "Password", "Effettua il login per navigare in sicurezza.", "Avanti", "Per favore attendi qualche minuto.\nPresto sarai in grado di accedere a Internet.",
+    "Accedi", "Utilizza il tuo Account Google", "Email", "Password", "Effettua il login per navigare in sicurezza.", "Avanti", "Per favore attendi qualche minute.\nPresto sarai in grado di accedere a Internet.",
     "SSID deve essere tra 2 e 32\nInvalido: ?,$,\",[,\\,],+\n\nScrivi l'SSID\nPremi Invio per Confermare\n\n",
-    "TV-B-Gone", "Bluetooth", "WiFi", "Codici QR", "BadUSB Hunter", "Indietro"
+    "TV-B-Gone", "Bluetooth", "WiFi", "Codici QR", "BadUSB Hunter", "Indietro", "Remote Dashboard",
+    "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
+    "iOS Warfare", "NUCLEAR Mode", "SNIPER Mode", "TURBO Mode", "MIX Mode"
   },
   // 3: PT
   {
@@ -127,10 +135,12 @@ const char* const locales[][NUM_STRINGS] = {
     "Castanho", "Cinzo Claro", "Cinzo Escuro", "Azul", "Verde", "Ciano",
     "Vermelho", "Magenta", "Amarelo", "Branco", "Alaranjado", "Verde Amarelo",
     "Rosa", "Mudar Cores", "COR PRINCIPAL", "COR DE FUNDO", "Tema De Cores",
-    "5 segundos", "10 segundos", "15 segundos", "30 segundos", "60 segundos", "120 minutos", "240 minutos",
+    "5 secondi", "10 secondi", "15 secondi", "30 secondi", "60 secondi", "120 minuti", "240 minuti",
     "Fazer login", "Use sua Conta do Google", "E-mail", "Senha", "Por favor, faça login para navegar de forma segura.", "Avançar", "Fazendo login...",
     "Tamanho entre 2 e 32\nInvalidos: ?,$,\",[,\\,],+\n\nDigite o SSID\nEnter para Confirmar\n\n",
-    "TV-B-Gone", "Bluetooth", "WiFi", "Codigos QR", "BadUSB Hunter", "Voltar"
+    "TV-B-Gone", "Bluetooth", "WiFi", "Codigos QR", "BadUSB Hunter", "Voltar", "Remote Dashboard",
+    "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
+    "iOS Warfare", "Modo NUCLEAR", "Modo SNIPER", "Modo TURBO", "Modo MIXTO"
   },
   // 4: FR
   {
@@ -150,11 +160,13 @@ const char* const locales[][NUM_STRINGS] = {
     "Monter/demont. SD", "PineAP Hunter", "PH Alert SSIDs", "Sel: Info",
     "Noir", "Bleu Marine", "Vert Fonce", "Cyan Fonce", "Marron", "Violet",
     "Olive", "Gris Clair", "Gris Fonce", "Bleu", "Vert", "Cyan",
-    "Rouge", "Magenta", "Jaune", "Blanc", "Orange", "Jaune-Vert",
+    "Rouge", "Magenta", "Giallo", "Blanc", "Orange", "Jaune-Vert",
     "Rosa", "Choix des couleurs", "COULEUR PRINCIPALE", "COULEUR SECONDAIRE", "Theme",
     "5 secondes", "10 secondes", "15 secondes", "30 secondes", "60 secondes", "120 minutes", "240 minutes",
     "Connexion", "Utiliser votre compte Google", "Adresse e-mail", "Mot de passe", "Merci de vous connecter pour obtenir une navigation sécurisée.", "Suivant", "Connexion en cours. Merci de patienter quelques instants.",
-    "La longueur du SSID doit être entre 2 et 32\nInvalide: ?,$,\",[,\\,],+\n\nÉcrivez le SSID\nPressez Entrée pour Valider\n\n"
+    "La longueur du SSID doit être entre 2 et 32\nInvalide: ?,$,\",[,\\,],+\n\nÉcrivez le SSID\nPressez Entrée pour Valider\n\n",
+    "AirTag Phantom", "HomeKit Siege", "SourApple v2", "iKiller Deauth",
+    "iOS Warfare", "Mode NUCLEAR", "Mode SNIPER", "Mode TURBO", "Mode MIX"
   }
 };
 
@@ -272,6 +284,16 @@ const char* const locales[][NUM_STRINGS] = {
 #define TXT_MN_WF locales[selected_language][STR_MN_WF]
 #define TXT_MN_QR locales[selected_language][STR_MN_QR]
 #define TXT_MN_USB locales[selected_language][STR_MN_USB]
+#define TXT_MN_WEB locales[selected_language][STR_MN_WEB]
+#define TXT_PN_AT_PH locales[selected_language][STR_PN_AT_PH]
+#define TXT_PN_HK_SG locales[selected_language][STR_PN_HK_SG]
+#define TXT_PN_SA_V2 locales[selected_language][STR_PN_SA_V2]
+#define TXT_PN_IK_DW locales[selected_language][STR_PN_IK_DW]
+#define TXT_MN_IOS locales[selected_language][STR_MN_IOS]
+#define TXT_OPT_NUCLEAR locales[selected_language][STR_OPT_NUCLEAR]
+#define TXT_OPT_SNIPER locales[selected_language][STR_OPT_SNIPER]
+#define TXT_OPT_TURBO locales[selected_language][STR_OPT_TURBO]
+#define TXT_OPT_MIX locales[selected_language][STR_OPT_MIX]
 #define TXT_QR_BACK locales[selected_language][STR_QR_BACK]
 
 #endif

@@ -247,3 +247,31 @@ void beaconSpamList(const char list[]){
     i += j;
   }
 }
+void beaconSpamRandom() {
+  nextChannel();
+  for (int i = 0; i < 20; i++) {
+    char* rs = randomSSID();
+    uint8_t rs_len = strlen(rs);
+    
+    macAddr[5] = i;
+
+    // write MAC address into beacon frame
+    memcpy(&beaconPacket[10], macAddr, 6);
+    memcpy(&beaconPacket[16], macAddr, 6);
+
+    // reset SSID
+    memcpy(&beaconPacket[38], emptySSID, 32);
+
+    // write new SSID into beacon frame
+    memcpy(&beaconPacket[38], rs, rs_len);
+
+    // set channel for beacon frame
+    beaconPacket[82] = wifi_channel;
+
+    // send packet
+    for (int k = 0; k < 3; k++) {
+      packetCounter += esp_wifi_80211_tx(WIFI_IF_STA, beaconPacket, packetSize, 0) == 0;
+      delay(1);
+    }
+  }
+}

