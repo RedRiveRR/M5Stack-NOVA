@@ -1,125 +1,42 @@
-# 🌌 NOVA v1.1.0
-### *M5Stack Donanımları İçin Gelişmiş Ofansif Güvenlik ve Sinyal Manipülasyon Platformu*
+# NOVA Firmware v1.1.0
 
-<div align="center">
+## Technical Overview
+NOVA v1.1.0 is an integrated firmware environment for M5Stack hardware platforms (ESP32 / ESP32-S3). It provides a framework for wireless signal research across 802.11 (WiFi), Bluetooth Low Energy (BLE), and Infrared (IR) protocols.
 
-[![Version](https://img.shields.io/badge/Sürüm-v1.1.0-gold.svg)]()
-[![License](https://img.shields.io/badge/Lisans-GPL--3.0-blue.svg)]()
-[![Build](https://img.shields.io/badge/Derleme-Başarılı-brightgreen.svg)]()
-[![Platform](https://img.shields.io/badge/Platform-ESP32--S3-black.svg)]()
-[![Language](https://img.shields.io/badge/Arayüz-Türkçe-red.svg)]()
+### Core Architecture
+The system utilizes a modular handler architecture to manage hardware resources and radio stacks:
+- **RF Layer:** Native BLE GAP advertising and raw 802.11 frame injection.
+- **Protocol Suite:** Implementation of signal assessment tools including Beacon analysis, Deauthentication monitoring, and BLE GAP proximity testing.
+- **Interface:** Functional display output managed via M5Unified / M5GFX.
 
-<img src="logo.png" width="400" alt="NOVA Operational Logo">
+## Integrated Modules
 
-**NOVA**, M5Stack cihazlarını taşınabilir bir ofansif güvenlik istasyonuna dönüştürür. Kablosuz ağlar, Bluetooth sinyalleri ve HID protokolleri üzerinde doğrudan müdahale ve manipülasyon yapmak için optimize edilmiştir.
+### Wireless Network (WiFi)
+- **Beacon Frame Research:** Generation of synthetic SSID frames for signal saturation and protocol testing.
+- **Deauthentication Tracking:** Real-time detection and logging of 802.11 management frame interference.
+- **Captive Portal Engine:** Localized HTTP/DNS redirection for assessment purposes.
 
-[Modüller](#-operasyonel-modüller) • [iOS Warfare](#-ios-warfare-suite-v11) • [Teknik Detaylar](#-teknik-mimari) • [Kurulum](#-kurulum-ve-dağıtım) • [Changelog](#-changelog)
+### Bluetooth Low Energy (BLE)
+- **GAP Advertising Framework:** Implementation of proximity protocols for iOS (Nearby Action), Android (Fast Pair), and Windows (Swift Pair).
+- **Proximity Analysis:** RSSI-based analysis and device identification.
 
-</div>
+### Infrared (IR)
+- **Signal Processing:** Hardware-level signal capture, reproduction, and protocol-specific jamming routines.
+- **Protocol Database:** Support for standard television and appliance control.
 
----
+## Hardware Specifications
+- **Supported Platforms:** M5StickC Plus2, M5Cardputer, M5Stamp S3.
+- **Radio Components:** 2.4GHz internal RF, IR LED.
+- **Input/Output:** TFT/LCD Display, IMU-based interaction.
 
-## 🚀 Operasyonel Modüller
+## Installation
 
-NOVA, saha operasyonları ve sızma testleri için tasarlanmış güçlü saldırı ve spam vektörleri içerir:
-
-### 📡 1. Kablosuz Ağ (WiFi) Operasyonları
-*   **Beacon Spam:** Spektrum üzerinde saniyeler içinde yüzlerce sahte SSID (Ağ adı) oluşturarak ağ kirliliği ve stres testi yapar.
-*   **Deauthentication:** Hedeflenen WiFi istemcilerinin veya tüm ağın bağlantısını koparmak için yönetim paketleri gönderir.
-*   **Nova Captive Portal:** Sahte giriş sayfaları (Phishing) oluşturarak ağ üzerinden kullanıcı verilerini test etmek için HTTP/DNS yönlendirmesi sağlar.
-
-### 📶 2. Bluetooth (BLE) Manipülasyonu
-*   **AppleJuice (iOS Spam):** Apple cihazlar üzerinde eşleşme ve kontrol bildirimleri oluşturarak Apple BLE yığınını manipüle eder.
-*   **Android/Windows Spam:** SwiftPair ve Google FastPair protokollerini kullanarak cihazlara sürekli bildirim ve eşleşme isteği gönderir.
-*   **BLE Sniffer & Flooder:** 2.4GHz Bluetooth paketlerini yakalar ve spektrumu geçersiz paketlerle doldurur.
-
-### 🍎 3. iOS Warfare Suite (v1.1)
-> **v1.1.0'da yeni!** Modern iPhone'lar (iOS 17/18) için özel olarak geliştirilmiş DoS bildirim motoru.
-
-*   **AirTag Phantom:** Apple Nearby Action protokolü üzerinden sürekli popup bildirimi yağdırır.
-*   **HomeKit Siege:** HomePod/HomeKit eşleşme popup'ları oluşturarak hedef cihazı meşgul eder.
-*   **SA Turbo:** SourApple Nearby Action flood — her 20ms'de yeni kimlikle popup tetikler.
-*   **SA Mix:** 15 farklı Apple bildirim tipi arasında rastgele geçiş yaparak iOS filtrelemeyi bypass eder.
-
-**Teknik Detaylar:**
-- `addData()` tabanlı Manufacturer Specific AD yapısı (17-byte Nearby Action paketi)
-- Her pakette `esp_fill_random()` ile rastgele authentication tag → iPhone her birini yeni cihaz sanır
-- `delay(20)` stabilite garantisi ile crash-free sürekli yayın
-
-### ⌨️ 4. HID & USB (BadUSB)
-*   **BadUSB Payloads:** Cihaza takılan sistemlerde önceden tanımlanmış komutları (Ducky Script benzeri) ışık hızında çalıştırarak otomatik konfigürasyon veya sızma testi yapar.
-*   **HID Analysis:** Bağlı cihazların HID descriptor'larını kontrol eder.
-
-### 📺 5. Kızılötesi (IR) Kontrol
-*   **TV-B-Gone:** Geniş bir IR kütüphanesi kullanarak her türlü televizyon ve projektörü kapatma veya kontrol etme sinyali gönderir.
-
-### 🛡️ 6. Savunma Modülleri
-*   **Deauth Hunter:** Ortamdaki WiFi deauth saldırılarını algılar ve uyarı verir.
-*   **BLE Hunter:** Çevredeki şüpheli BLE cihazlarını (Flipper Zero, AirTag tracker vb.) tespit eder.
-*   **Pineapple Hunter:** Sahte erişim noktalarını (Evil Twin) tespit etmek için SSID analizi yapar.
-
----
-
-## 🛠 Teknik Mimari
-
-| Katman | Teknoloji |
-| :--- | :--- |
-| **İşlemci** | ESP32-S3 (M5StickC Plus2 / Cardputer / StampS3) |
-| **Görsel** | M5Unified / M5GFX (Yüksek FPS Boot Animasyonu) |
-| **Dil** | C++ / Arduino / PlatformIO |
-| **Ağ** | WiFi 802.11 b/g/n & Bluetooth Low Energy (BLE) |
-| **iOS Warfare** | Apple Nearby Action (0x0F) / Proximity Pairing (0x07) |
-
----
-
-## 📦 Kurulum ve Dağıtım
-
-### ⚡ M5Burner İle Yükleme
-En pratik yükleme yöntemi:
-1.  **M5Burner** uygulamasını indirin ve açın.
-2.  Sol menüden cihazınızı seçin.
-3.  Arama kutusuna **"Nova"** yazın.
-4.  **RedRiveRR** tarafından yayınlanan güncel sürümü **Burn** diyerek cihazınıza atın.
-
-### 💻 Geliştiriciler İçin (Derleme)
+### Source Build
 ```bash
 git clone https://github.com/RedRiveRR/M5Stack-NOVA.git
 cd M5Stack-NOVA
-pio run -t upload
+pio run -e stick_c_plus2 -t upload
 ```
 
----
-
-## 📋 Changelog
-
-### v1.1.0 — iOS Warfare DoS Engine (2026-04-11)
-- ✅ **iOS Warfare Suite** eklendi: AirTag Phantom, HomeKit Siege, SA Turbo, SA Mix
-- ✅ Apple Nearby Action (0x0F) protokolü ile iPhone popup flood
-- ✅ Her pakette rastgele auth tag = iOS dedup bypass
-- ✅ 15 farklı Apple action type rotasyonu (AppleTV, Vision Pro, HomePod, Apple ID vb.)
-- ✅ `applejuice.h` payload'ları 31-byte BLE frame limitine uygun olarak yeniden hesaplandı
-- ✅ BLE stack crash koruması (stabilize edilmiş stop→build→start akışı)
-- 🔧 AirTag payloads'ı Find My (0x12) protokolüne güncellendi
-- 🔧 Proximity Pairing payload boyutları 26 byte'a optimize edildi
-- 🔧 Nearby Action payload boyutları 19 byte'a optimize edildi
-
-### v1.0.0 — İlk Sürüm
-- 🎉 Nova firmware ilk kararlı sürümü
-- WiFi Beacon Spam, Deauth, Captive Portal
-- AppleJuice BLE Spam (iOS/Android/Windows)
-- TV-B-Gone IR Kontrol
-- BadUSB HID Payloads
-- Deauth Hunter, BLE Hunter, Pineapple Hunter
-- Türkçe arayüz desteği
-- Cyberpunk Cyan/Dark tema
-
----
-
-## ⚖️ Sorumluluk Reddi (Legal Disclaimer)
-Bu yazılım sadece **etik siber güvenlik araştırması ve eğitim amaçlı** geliştirilmiştir. İzin alınmamış sistemler, cihazlar veya ağlar üzerinde kullanılması kesinlikle yasaktır ve yasal sonuçlar doğurabilir. Kullanıcı, bu aracın kullanımından doğacak her türlü hukuki ve fiziksel sorumluluğu peşinen kabul eder. **Geliştirici (RedRiveRR), yazılımın kötüye kullanımından sorumlu tutulamaz.**
-
----
-
-<div align="center">
-  <b>NOVA v1.1.0</b> · Geliştiren: <b><a href="https://github.com/RedRiveRR">RedRiveRR</a></b>
-</div>
+## Legal Disclaimer
+This software is provided for cybersecurity research and educational purposes only. Unauthorized use on systems or networks without prior explicit consent is strictly prohibited. The user assumes all legal responsibility for the application of this tool.

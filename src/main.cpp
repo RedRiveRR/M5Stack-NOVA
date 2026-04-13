@@ -1,5 +1,4 @@
-// Nova Firmware for M5Stack Devices
-// High-tech pranks and digital self-defense platform
+// NOVA Firmware - Integrated Signal Analysis and Wireless Security Platform
 
 #include <Arduino.h>
 
@@ -41,10 +40,7 @@ struct QRCODE {
 };
 
 QRCODE qrcodes[] = {
-  { "", "" }, 
-  { "Rickroll", "https://youtu.be/dQw4w9WgXcQ"},
-  { "HackerTyper", "https://hackertyper.net/"},
-  { "ZomboCom", "https://html5zombo.com/"},
+  { "Placeholder", "https://example.com"},
 };
 
 // Forward Declarations
@@ -207,7 +203,7 @@ int selected_language = 0; // 0:EN, 1:TR, 2:IT, 3:PT, 4:FR
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
   #define IRLED 19
-  #define BITMAP M5.Display.drawBmp(NovaMatrix, 97254)
+  #define BITMAP Serial.println("unsupported")
   #define M5_BUTTON_MENU 35
   #define M5_BUTTON_HOME 37
   #define M5_BUTTON_RST 39
@@ -241,7 +237,7 @@ int selected_language = 0; // 0:EN, 1:TR, 2:IT, 3:PT, 4:FR
   // -=-=- ALIASES -=-=-
   #define DISP M5.Display
   #define IRLED 46
-  #define BITMAP M5.Display.drawBmp(NovaMatrix, 97254)
+  #define BITMAP Serial.println("unsupported")
   #define M5_BUTTON_MENU 12  // KEY2 per device diagram
   #define M5_BUTTON_HOME 11  // KEY1 (main front button)
   #define M5_BUTTON_RST -1   // GPIO 0 not usable on StickS3 (power/boot pin)
@@ -424,7 +420,6 @@ int dh_pkts = 0;
 #include "sd.h"
 #include "localization.h"
 #include "portal.h"
-#include "NovaMatrix.h"
 #include "songs.h"
 #include <BLEUtils.h>
 #include <BLEServer.h>
@@ -2409,41 +2404,24 @@ void wscan_loop(){
 }
 
 void bootScreen(){
-  #ifdef SONG
-  setupSongs();
-  #endif
-  BITMAP;
-  delay(3000);
-  DISP.fillScreen(BGCOLOR);
-  DISP.setTextSize(BIG_TEXT);
-  DISP.setCursor(40, 0);
-  DISP.println("M5-NOVA");
-  DISP.setCursor(10, 30);
+  DISP.fillScreen(TFT_BLACK);
   DISP.setTextSize(SMALL_TEXT);
-  DISP.printf("%s-%s\n",NOVA_VERSION,platformName);
-#if defined(CARDPUTER)
-  DISP.println(TXT_INST_NXT);
-  DISP.println(TXT_INST_PRV);
-  DISP.println(TXT_INST_SEL);
-  DISP.println(TXT_INST_HOME);
-  delay(1500);
-  DISP.println(TXT_INST_PRSS_KEY);
-  while(true){
-    M5Cardputer.update();
-    if (M5Cardputer.Keyboard.isChange()) {
-      drawmenu(mmenu, mmenu_size);
-      delay(250);
-      break;
+  DISP.setTextColor(WHITE, TFT_BLACK);
+  DISP.setCursor(0, 0);
+  DISP.println("NOVA FW v1.1.0");
+  DISP.println("Initializing hardware...");
+  
+  #if defined(BACKLIGHT)
+    analogWrite(BACKLIGHT, 0);
+    for (int b = 0; b <= brightness; b += 10) {
+      screenBrightness(b);
+      delay(10);
     }
-  }
-#else
-  DISP.println(TXT_STK_NXT);
-  DISP.println(TXT_STK_SEL);
-#if !defined(STICKS3)
-  DISP.println(TXT_STK_HOME);
-#endif
-  delay(3000);
-#endif
+  #endif
+  
+  delay(500);
+  DISP.println("System Ready.");
+  delay(1000);
 }
 
 void qrmenu_drawmenu() {
